@@ -2,12 +2,10 @@ import React,{useState} from 'react'
 import {AiFillCamera,AiOutlineSearch,AiFillPlusCircle} from 'react-icons/ai'
 import { BiChevronDown } from "react-icons/bi";
 import Stack from '@mui/material/Stack';
-import { TextField,Button, Modal,Typography,Box,Fab } from '@mui/material';
-import { newPassword } from '../schema/schemaindex';
-import { useFormik } from 'formik';
+import { TextField,Button, Modal,Box,Fab ,MenuItem} from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { getCatalogParent , getSubCatalog} from '../graphql/queries';
-
+import { districtData } from '../dummydata/districtData';
 const ModalEditUser = ({isVisible,onClose}) => {
     const style = {
       position: 'absolute',
@@ -29,19 +27,16 @@ const ModalEditUser = ({isVisible,onClose}) => {
     const [selectedTest, setSelectedTest] = useState("");
     const [openTest, setOpenTest] = useState(false); 
 
+
+    const [district,setDistrict] = useState('')
     const {loading,error,data} = useQuery(getCatalogParent)
-    const {values:valuesPass, errors:errorsPass, touched:touchedPass, handleSubmit:handleSubmitPass, handleChange:handleChangePass} = useFormik({
-      initialValues:{
-        currentPass:'',
-        newPass:'',
-        confirmPass:''
-      },
-      validationSchema:newPassword,
-    })
     const handleOpenModalChangePass = () => setOpenModalChangePass(true);
     const handleCloseModalChangePass = () => setOpenModalChangePass(false);
     const handleOpenModalAddAddress = () => setOpenModalAddAddress(true);
     const handleCloseModalAddAddress = () => setOpenModalAddAddress(false);
+    const handleChangDistrict = (e)=>{
+      setDistrict(e.target.value)
+    }
     const uploadImage = async (e) => {
       console.log(e.target.files);
       const file = e.target.files[0];
@@ -161,18 +156,32 @@ const ModalEditUser = ({isVisible,onClose}) => {
                                           >
                                               <Box sx={style}>
                                                 <form action="">
-                                                  <h1 className='text-center text-xl font-medium text-textcolor mb-2'>Change Adđ</h1>
-                                                  <Stack spacing={3} className='mb-3'>
-                                                      <TextField id="outlined-basic" label="Current password" variant="outlined"/>
+                                                  <h1 className='text-center text-xl font-medium text-textcolor mb-2'>Add Address</h1>
+                                                  <Stack className='mb-3'>
+                                                      <TextField id="outlined-basic" label="Full Name" variant="outlined"/>
                                                   </Stack>
-                                                  <Stack spacing={3} className='mb-3'>
-                                                      <TextField id="outlined-basic" label="New password" variant="outlined"/>
+                                                  <Stack className='mb-3'>
+                                                      <TextField id="outlined-basic" label="Phone number" variant="outlined"/>
                                                   </Stack>
-                                                  <Stack spacing={3} className='mb-3'>
-                                                      <TextField id="outlined-basic" label="Confirm new password" variant="outlined"/>
+                                                  <Stack className='mb-3 gap-3'>
+                                                        <TextField
+                                                          id="demo-simple-select"
+                                                          value={district}
+                                                          label="District"
+                                                          onChange={handleChangDistrict}
+                                                          select
+                                                          sx={{width:"100%"}}
+                                                        >
+                                                          {districtData.map((itemDistrict,indexDistrict)=>(
+                                                            <MenuItem value={itemDistrict.district} key={itemDistrict.id}>{itemDistrict.district}</MenuItem>
+                                                          ))}
+                                                        </TextField>                                                                                                   
+                                                  </Stack>
+                                                  <Stack className='mb-3'>
+                                                      <TextField id="outlined-basic" label="Address" variant="outlined"/>
                                                   </Stack>
                                                   <div className='flex gap-2'>
-                                                    <Button variant="contained" type='submit' style={{backgroundColor:"#F2AF92",height:"100%"}}>Save</Button>
+                                                    <Button variant="contained" type='submit' style={{backgroundColor:"#F2AF92",height:"100%"}}>Add Address</Button>
                                                     <Button variant="contained" type='button' onClick={handleCloseModalAddAddress} style={{backgroundColor:"#F2AF92",height:"100%"}}>Close</Button>
                                                   </div>
                                                 </form>

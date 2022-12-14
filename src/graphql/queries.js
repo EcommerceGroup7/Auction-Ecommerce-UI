@@ -284,4 +284,28 @@ const getSimilartProductAuction = gql`
         }
     }
 `
-export {getSingleEmailUser, getPopulateCatalog, getListCategoryForSidebar,getProductByCatalogName,getAllProduct, getProductById, getSimilarProduct,searchProduct, getCatalogParent, getSubCatalog, getOperatingAuctionField,getProductByUser,getAvailableAuctionField,getAuctioningProduct,searchAuctioningProduct,getAuctioningProductByCatalog,getProductAuctionById,getSimilartProductAuction}
+const getMinTimeToDiscount = gql`
+    query getMinTimeToDiscount{
+        getMinTimeToDiscount
+    }
+`
+export {getSingleEmailUser, 
+    getPopulateCatalog, 
+    getListCategoryForSidebar,
+    getProductByCatalogName,
+    getAllProduct, 
+    getProductById, 
+    getSimilarProduct,
+    searchProduct,
+     getCatalogParent, 
+     getSubCatalog, 
+     getOperatingAuctionField,
+     getProductByUser,
+     getAvailableAuctionField,
+     getAuctioningProduct,
+     searchAuctioningProduct,
+     getAuctioningProductByCatalog,
+     getProductAuctionById,
+     getSimilartProductAuction, 
+     getMinTimeToDiscount
+}

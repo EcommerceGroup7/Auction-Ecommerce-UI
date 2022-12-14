@@ -96,7 +96,6 @@ const createProduct = gql`
         $Weight:Float!,
         $Price:Float!,
         $User_Note:String,
-        $ShopName:String,
         $Product_Info:String,
         $Catalog_ID:String!
     ){
@@ -106,7 +105,6 @@ const createProduct = gql`
             Weight:$Weight,
             Price:$Price,
             User_Note:$User_Note,
-            ShopName:$ShopName,
             Product_Info:$Product_Info,
             Catalog_ID:$Catalog_ID,
         })

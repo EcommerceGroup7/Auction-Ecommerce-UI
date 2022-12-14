@@ -19,7 +19,7 @@ const AdminSideBar = () => {
                 <MdCardGiftcard size={25}/>
                 <h1 >Order</h1>
             </Link>
-            <Link className='flex items-center px-2 py-2 rounded-lg gap-2 mb-4 cursor-pointer hover:bg-link hover:text-white transition-all ease-in-out duration-500'>
+            <Link to='/current' className='flex items-center px-2 py-2 rounded-lg gap-2 mb-4 cursor-pointer hover:bg-link hover:text-white transition-all ease-in-out duration-500'>
                 <HiCurrencyDollar size={25}/>
                 <h1>Currency</h1>
             </Link>

@@ -4,14 +4,17 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import {
+  split,
   ApolloClient,
   InMemoryCache,
   createHttpLink,
   ApolloProvider,
 } from '@apollo/client'
+import {createUploadLink} from 'apollo-upload-client'
 import { setContext } from '@apollo/client/link/context'
 
-const httpLink = createHttpLink({
+
+const httpLink = createUploadLink({
   uri: 'https://fresh-auction.herokuapp.com/graphql',
   headers:{
     "Access-Control-Allow-Origin": "*",

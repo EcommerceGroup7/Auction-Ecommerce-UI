@@ -38,11 +38,11 @@ function App() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Router>
             <Routes>
-              <Route path='/dashboard' element={<AdminHome/>}/>
+              {/* <Route path='/dashboard' element={<AdminHome/>}/>
               <Route path='/order' element={<AdminOrder/>}/>
               <Route path='/productmana' element={<AdminProduct/>}/>
               <Route path='/editBid' element={<AdminBid/>}/>
-              <Route path='/current' element={<AdminCurrency/>}/>
+              <Route path='/current' element={<AdminCurrency/>}/> */}
               <Route path='/' element={<Home/>}/>
               <Route path='/signup' element={<Signup/>}/>
               <Route path='/otp/' element={<OTP/>}/>

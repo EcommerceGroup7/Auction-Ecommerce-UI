@@ -1,6 +1,8 @@
 import React ,{useState,useEffect}from 'react'
 
 const Countdown = ({start,end}) => {
+    
+
     let endfff = new Date(end).getTime()
     let startfff = new Date().getTime()
     const [timeSum, setTimeSum] = useState(endfff-startfff)
@@ -8,6 +10,8 @@ const Countdown = ({start,end}) => {
         setTimeout(()=>{
             setTimeSum(timeSum - 1000)
         },1000)
+        
+        // return()=>clearInterval(minTimeSetInterval)
     },[timeSum])
 
     const getFormattedTime = (milliseconds) =>{
@@ -20,10 +24,12 @@ const Countdown = ({start,end}) => {
         let minutes = parseInt(total_minutes % 60)
         let hours = parseInt(total_hours % 24)
 
-        return `${days}:${hours}:${minutes}:${seconds}`
-    }
+        return `${days} day : ${hours} hour : ${minutes} minute : ${seconds} second`
+    } 
   return (
-    <div>Count down: {getFormattedTime(timeSum)}</div>
+    <div>
+      Count down: {getFormattedTime(timeSum)}
+    </div>
   )
 }
 

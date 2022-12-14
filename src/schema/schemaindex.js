@@ -27,7 +27,6 @@ export const resetPassword = yup.object().shape({
     otpresetpassword:yup.string().required('OTP is required')
 })
 export const productAddValidation = yup.object().shape({
-    arrayImg:yup.array().required("Must have less 1 image"),
     productName:yup.string().required("Product name must have"),
     productWeight:yup.string().required("Product weight must have"),
     productPrice:yup.string().required("Product price must have"),

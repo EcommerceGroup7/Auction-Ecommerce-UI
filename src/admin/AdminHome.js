@@ -9,7 +9,7 @@ const AdminHome = () => {
         <AdminNavbar/>
         <div className='lg:container mx-auto flex mt-20 gap-5'>
             <AdminSideBar/>
-            <div className='flex-1 bg-red-600'>
+            <div className='flex-1'>
                 <AdminDashboard/>
             </div>
         </div>

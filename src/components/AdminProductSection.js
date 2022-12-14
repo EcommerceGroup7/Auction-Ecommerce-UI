@@ -100,7 +100,7 @@ import TableRow from '@mui/material/TableRow';
     createData('Brazil', 'BR', 210147125, 8515767),
   ];
 const AdminProductSection = () => {
-    const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleChangePage = (event, newPage) => {

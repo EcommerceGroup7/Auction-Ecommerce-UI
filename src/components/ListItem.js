@@ -1,6 +1,6 @@
 import React, { useEffect, useState ,useContext} from 'react'
 import { useQuery } from '@apollo/client' 
-import {getAuctioningProduct,searchAuctioningProduct,getAuctioningProductByCatalog} from '../graphql/queries'  
+import {getAuctioningProduct,searchAuctioningProduct,getAuctioningProductByCatalog, getMinTimeToDiscount} from '../graphql/queries'  
 import { useParams, Link } from 'react-router-dom'
 import { UserContext } from '../App'
 import Countdown from './Countdown'
@@ -10,21 +10,38 @@ const ListItem = () => {
     const param = useParams()
     const {searchValue,setSearchValue} = useContext(UserContext)
     console.log(param)
-    const {loading:loadingItem, error,data:dataItem} = useQuery(getAuctioningProductByCatalog,{
+    const {loading:loadingItem, error,data:dataItem, refetch:refetchProductCatalog} = useQuery(getAuctioningProductByCatalog,{
         variables:{
             Catalog_Name:param.cate
         }
     })
-    const {loading:loadingAll, errorAll, data:dataAll} = useQuery(getAuctioningProduct)
-    const {loading:loadingSearch, errors: errorsSearch, data:dataSearch} = useQuery(searchAuctioningProduct,{
+    const {loading:loadingAll, errorAll, data:dataAll, refetch} = useQuery(getAuctioningProduct)
+    const {loading:loadingSearch, errors: errorsSearch, data:dataSearch, refetch:refetchSearch} = useQuery(searchAuctioningProduct,{
         variables:{
             Product_Name:searchValue,
         }
     })
+    const {loading:loadingMinTime, errors:errorsMinTime, data:dataMinTime} = useQuery(getMinTimeToDiscount)
     useEffect(()=>{
         console.log(dataItem);
         console.log(dataAll);
-    },[dataItem,dataAll])
+        const minInterval = setInterval(()=>{
+            if(param.cate === 'all'){
+                refetch()
+            }
+            else if((param.cate !== searchValue)){
+                refetchProductCatalog({
+                    Catalog_Name:param.cate
+                })
+            }
+            else{
+                refetchSearch({
+                    Product_Name:searchValue,
+                })
+            }
+        },(!loadingMinTime && dataMinTime.getMinTimeToDiscount*60*1000 + 1500))
+        return ()=>clearInterval(minInterval)
+    },[dataItem,dataAll,])
   return (
     <div className='sm:col-span-5 md:col-span-4 lg:col-span-4 px-3 '>
         <div className='flex justify-between'>
@@ -52,7 +69,7 @@ const ListItem = () => {
                             <h1>Product Name: {itemAll.Product_ID.Product_Name}</h1>
                             <h1>Starting Price: {itemAll.Starting_Price}$</h1>
                             <h1>Current Price: {itemAll.Current_Price}$</h1>
-                            <Countdown start={itemAll.Auction_Field_ID.Start_Time} end={itemAll.Auction_Field_ID.End_Time}/>
+                            <Countdown start={itemAll.Auction_Field_ID.Start_Time} end={itemAll.Auction_Field_ID.End_Time} />
                         </Link>
                     ))}
                 </div>

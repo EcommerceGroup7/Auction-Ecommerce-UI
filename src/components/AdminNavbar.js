@@ -91,7 +91,7 @@ const AdminNavbar = () => {
                                 <h1>{userName}</h1>
                             </li>
                             <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link to='/product'>Settings Profile</Link>
+                                <Link>Settings Profile</Link>
                             </li>
                             <li className='hover:bg-link p-1 rounded-lg' onClick={isLogOut}>
                                 <span>Logout</span>

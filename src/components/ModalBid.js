@@ -12,6 +12,8 @@ const ModalBid = ({isVisible, onClose,dataShowModal}) => {
     })
     const [timer, setTimer] = useState('')
     const [auctionField, setAuctionField] = useState('')
+    const [errorMutation, setErrorMutation] = useState(null)
+    const [successMutation, setSuccessMutation] = useState(null)
     const {loading, error, data} = useQuery(getAvailableAuctionField)
     const [createProductAuctionBid,dataMutation] = useMutation(createProductAuction)
     const {values,errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({
@@ -44,8 +46,17 @@ const ModalBid = ({isVisible, onClose,dataShowModal}) => {
         setAuctionField(auctionID)
     }
     useEffect(()=>{
+        if(!dataMutation.loading && dataMutation.called){
+            if(dataMutation.error){
+                console.log(dataMutation.error);
+                setErrorMutation(dataMutation.error)
+            }
+            else{
+                setSuccessMutation('This product Bid is on')
+            }
+        }
         console.log(data);
-    },[data])
+    },[data,dataMutation.called,dataMutation.error,dataMutation.loading])
     if(!isVisible) return null
   return (
     <div className='fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-10'>
@@ -82,6 +93,8 @@ const ModalBid = ({isVisible, onClose,dataShowModal}) => {
                     </div>
                     <button disabled={!loading && data.getAvailableAuctionField.length===0 ? true : false} type='submit' className='inline-block border-background-signup px-6 py-2.5 text-black font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-link hover:shadow-lg transition duration-150 ease-in-out bg-white'>Add to Product Bid</button>
                     {!loading && data.getAvailableAuctionField.length===0 ? <p className='text-red-700'>Không thể lên sàn được thì không có Auction Field</p> : ''}
+                    {errorMutation === null && (!loading && data.getAvailableAuctionField.length!==0) ? '' : <p className='text-red-700'>{errorMutation}</p>}
+                    {successMutation === null (!loading && data.getAvailableAuctionField.length!==0) ?  '' : <p className='text-red-700'>{errorMutation}</p>}
                 </form>
             </div>
         </div>
