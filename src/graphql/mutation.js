@@ -35,7 +35,10 @@ const login = gql`
             userId{
                 id
             }
-            accessToken
+            accessToken,
+            userInfo{
+                User_Name
+            }
         }
     }
 ` 
@@ -67,4 +70,46 @@ const ResetPassword =  gql`
         })
     }
 `
-export {addUser, activeOTP,login, resendOtp, forgotPassword, ResetPassword}
+const createProductAuction = gql`
+    mutation createProductAuction(
+        $Weight:Float!,
+        $Starting_Price:Float!,
+        $Discount_Rate:Int!,
+        $Product_ID:String!,
+        $Auction_Field_ID:String!
+    ){
+        createProductAuction(CreateProductAuctionInput:{
+            Weight:$Weight,
+            Starting_Price:$Starting_Price,
+            Discount_Rate:$Discount_Rate,
+            Product_ID:$Product_ID,
+            Auction_Field_ID:$Auction_Field_ID
+        }){
+            Product_Auction_ID
+        }
+    }
+`
+const createProduct = gql`
+    mutation createProduct(
+        $Product_Image:[Upload!],
+        $Product_Name:String!,
+        $Weight:Float!,
+        $Price:Float!,
+        $User_Note:String,
+        $ShopName:String,
+        $Product_Info:String,
+        $Catalog_ID:String!
+    ){
+        createProduct(createProductInput:{
+            Product_Image:$Product_Image,
+            Product_Name:$Product_Name,
+            Weight:$Weight,
+            Price:$Price,
+            User_Note:$User_Note,
+            ShopName:$ShopName,
+            Product_Info:$Product_Info,
+            Catalog_ID:$Catalog_ID,
+        })
+    }
+`
+export {addUser, activeOTP,login, resendOtp, forgotPassword, ResetPassword,createProductAuction, createProduct}

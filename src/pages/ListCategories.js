@@ -1,11 +1,9 @@
-import React, { createContext, useState } from 'react'
+import React, { useState } from 'react'
 import Footer from '../components/Footer'
 import ListItem from '../components/ListItem'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/SideBar'
-
 const ListCategories = () => {
- 
   return (
     <>
       <Navbar/>

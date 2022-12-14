@@ -26,3 +26,16 @@ export const resetPassword = yup.object().shape({
     confirmnewpassword:yup.string().oneOf([yup.ref("newpassword")], "Password must be match"),
     otpresetpassword:yup.string().required('OTP is required')
 })
+export const productAddValidation = yup.object().shape({
+    arrayImg:yup.array().required("Must have less 1 image"),
+    productName:yup.string().required("Product name must have"),
+    productWeight:yup.string().required("Product weight must have"),
+    productPrice:yup.string().required("Product price must have"),
+    productDesc:yup.string().required("Product description must have"),
+    userInfo:yup.string().required("User info must have"),
+})
+export const newPassword = yup.object().shape({
+    currentPass:yup.string().required('Current pass is a required field'),
+    newPass:yup.string().min(6,"Password must be at least 6 characters").required('Password is a required field'),
+    confirmPass:yup.string().oneOf([yup.ref("newPass")], "Password must be match"),
+})

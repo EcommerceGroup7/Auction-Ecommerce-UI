@@ -6,6 +6,7 @@ import { UserContext } from '../App'
 const Navbar = () => {
   const [checkUser, setCheckUser] = useState(false)
   const [openModalUser, setOpenModalUser] = useState(false)
+  const [userName,setUserName] = useState('')
   const {searchValue,setSearchValue} = useContext(UserContext)
   const navigate = useNavigate()
   const onSearchSubmit =  (e) =>{
@@ -15,15 +16,18 @@ const Navbar = () => {
   }
   const isLogOut = () =>{
         localStorage.removeItem('token')
+        setCheckUser(false)
         navigate(`/`)
   }
   useEffect(() => {
     if(localStorage.getItem('token')===null)
     {
       setCheckUser(false)
+      setUserName('')
     }
     else{
       setCheckUser(true)
+      setUserName(JSON.parse(localStorage.getItem('token')).userInfo.User_Name)
     }
   }, [])
   const openModal = ()=>{
@@ -92,8 +96,11 @@ const Navbar = () => {
 
                           <div className='sm:absolute sm:-left-[450%] sm:text-right text-center sm:top-[200%] '>
                             <ul className='w-40 bg-textcolor p-4 rounded-xl'>
+                              <li className='text-lg font-semibold p-1 rounded-lg'>
+                                <h1>{userName}</h1>
+                              </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link>Product Manage</Link>
+                                <Link to='/product'>Product Manage</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
                                 <Link>Order History</Link>
@@ -105,7 +112,7 @@ const Navbar = () => {
                                 <Link>Current Bid</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link>View Profile</Link>
+                                <Link to='/profile'>View Profile</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
                                 <Link>Currency</Link>
@@ -119,7 +126,7 @@ const Navbar = () => {
                       </div>
                   </li>
               </>
-            ): (
+            ) : (
               <>
                   <li className="mt-2 sm:mt-0">
                     <Link
