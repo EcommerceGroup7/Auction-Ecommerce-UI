@@ -1,28 +1,38 @@
 import React, {useEffect, useState} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import {  getProductAuctionById, getSimilartProductAuction} from '../graphql/queries'
+import {  getProductAuctionById, getSimilartProductAuction,getMinTimeToDiscount} from '../graphql/queries'
 import Countdown from './Countdown'
 const ItemCard = () => {
     const [imgState, setImgState] = useState('')
     const param = useParams()
-    const {loading:loadingCurItem, error, data:dataCurItem} = useQuery(getProductAuctionById,{
+    const {loading:loadingCurItem, error, data:dataCurItem, refetch:refecthGetId} = useQuery(getProductAuctionById,{
         variables:{
             Product_Auction_ID:param.cateItem
         }
     })
-    const {loading: loadingSimilar, error:errorSimilar, data:dataSimilar} = useQuery(getSimilartProductAuction,{
+    const {loading: loadingSimilar, error:errorSimilar, data:dataSimilar, refetch:refetchSimilar} = useQuery(getSimilartProductAuction,{
         variables:{
             Product_Auction_ID:param.cateItem
         }
     })
+    const {loading:loadingMinTime, error:errorMinTime, data:dataMinTime} = useQuery(getMinTimeToDiscount)
     useEffect(()=>{
         console.log(dataCurItem);
         console.log(dataSimilar);
         if(!loadingCurItem){
             setImgState(dataCurItem.getProductAuctionById.Product_ID.Product_Image[0].Product_Image_Url)
         }
-    },[dataCurItem])
+        const intervalMinTime = setInterval(()=>{
+            refecthGetId({
+                Product_Auction_ID:param.cateItem
+            })
+            refetchSimilar({
+                Product_Auction_ID:param.cateItem
+            })
+        },(!loadingMinTime && dataMinTime.getMinTimeToDiscount * 60 *1000 + 1500))
+        return ()=>clearInterval(intervalMinTime)
+    },[dataCurItem,dataSimilar,loadingCurItem,refecthGetId,refetchSimilar,loadingMinTime,dataMinTime.getMinTimeToDiscount,param.cateItem])
   return (
     <div className='mt-20 mb-10'>
         {!loadingCurItem && (
@@ -46,8 +56,7 @@ const ItemCard = () => {
                     <div className='grid grid-cols-2 ml-12 mb-4 p-5 border-t-2 border-b-2 border-black'>
                         <div>
                             <div className='flex'>
-                                <h1>Time left: </h1>
-                                <h1>12h 30m</h1>
+                                <Countdown start={dataCurItem.getProductAuctionById.Auction_Field_ID.Start_Time} end={dataCurItem.getProductAuctionById.Auction_Field_ID.End_Time}/>
                             </div>
                             <div className='flex'>
                                 

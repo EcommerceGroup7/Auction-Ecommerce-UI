@@ -32,7 +32,7 @@ const ProductList = () => {
         <h1 className='font-semibold '>Product Management</h1>
         <div className='grid lg:grid-cols-4 gap-3'>
             {!loadingProduct && dataProduct.getProductByUser.map((itemProBid, indexProBid)=>(
-                <Link className='bg-link p-3 rounded-lg' key={itemProBid.Product_ID}>
+                <Link className='bg-link p-3 rounded-lg' key={itemProBid.Product_ID} to={`/product/${itemProBid.Product_ID}`}>
                     <div className='grid grid-cols-2 grid-rows-2 gap-1'>
                         {itemProBid.Product_Image.slice(0,2).map((itemProBidImg, indexProBidImg)=>(
                             <div key={itemProBidImg.Product_Image_ID} className='row-span-2'>

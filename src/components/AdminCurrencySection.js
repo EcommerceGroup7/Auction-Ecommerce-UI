@@ -10,7 +10,7 @@ import {
     Legend,
   } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { faker } from 'https://cdn.skypack.dev/@faker-js/faker';
+// import { faker } from 'https://cdn.skypack.dev/@faker-js/faker';
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';

@@ -2,7 +2,7 @@ import React from 'react'
 import {FaProductHunt} from 'react-icons/fa'
 import {BsFillCartCheckFill,BsCartPlusFill} from 'react-icons/bs'
 import {MdSell} from 'react-icons/md'
-import { faker } from 'https://cdn.skypack.dev/@faker-js/faker';
+// import { faker } from 'https://cdn.skypack.dev/@faker-js/faker';
 import {
     Chart as ChartJS,
     CategoryScale,

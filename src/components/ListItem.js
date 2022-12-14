@@ -41,7 +41,7 @@ const ListItem = () => {
             }
         },(!loadingMinTime && dataMinTime.getMinTimeToDiscount*60*1000 + 1500))
         return ()=>clearInterval(minInterval)
-    },[dataItem,dataAll,])
+    },[dataItem,dataAll])
   return (
     <div className='sm:col-span-5 md:col-span-4 lg:col-span-4 px-3 '>
         <div className='flex justify-between'>
