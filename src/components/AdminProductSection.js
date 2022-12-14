@@ -29,91 +29,91 @@ import TableRow from '@mui/material/TableRow';
     Tooltip,
     Legend
   );
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Chart.js Bar Chart',
-      },
-    },
-  };
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: 'Dataset 1',
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-    ],
-  };
-  const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-      id: 'population',
-      label: 'Population',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'size',
-      label: 'Size\u00a0(km\u00b2)',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'density',
-      label: 'Density',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toFixed(2),
-    },
-  ];
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
+  // const options = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: {
+  //       position: 'top',
+  //     },
+  //     title: {
+  //       display: true,
+  //       text: 'Chart.js Bar Chart',
+  //     },
+  //   },
+  // };
+  // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  // const data = {
+  //   labels,
+  //   datasets: [
+  //     {
+  //       label: 'Dataset 1',
+  //       data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+  //       backgroundColor: 'rgba(255, 99, 132, 0.5)',
+  //     },
+  //   ],
+  // };
+  // const columns = [
+  //   { id: 'name', label: 'Name', minWidth: 170 },
+  //   { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+  //   {
+  //     id: 'population',
+  //     label: 'Population',
+  //     minWidth: 170,
+  //     align: 'right',
+  //     format: (value) => value.toLocaleString('en-US'),
+  //   },
+  //   {
+  //     id: 'size',
+  //     label: 'Size\u00a0(km\u00b2)',
+  //     minWidth: 170,
+  //     align: 'right',
+  //     format: (value) => value.toLocaleString('en-US'),
+  //   },
+  //   {
+  //     id: 'density',
+  //     label: 'Density',
+  //     minWidth: 170,
+  //     align: 'right',
+  //     format: (value) => value.toFixed(2),
+  //   },
+  // ];
+  // function createData(name, code, population, size) {
+  //   const density = population / size;
+  //   return { name, code, population, size, density };
+  // }
   
-  const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-  ];
+  // const rows = [
+  //   createData('India', 'IN', 1324171354, 3287263),
+  //   createData('China', 'CN', 1403500365, 9596961),
+  //   createData('Italy', 'IT', 60483973, 301340),
+  //   createData('United States', 'US', 327167434, 9833520),
+  //   createData('Canada', 'CA', 37602103, 9984670),
+  //   createData('Australia', 'AU', 25475400, 7692024),
+  //   createData('Germany', 'DE', 83019200, 357578),
+  //   createData('Ireland', 'IE', 4857000, 70273),
+  //   createData('Mexico', 'MX', 126577691, 1972550),
+  //   createData('Japan', 'JP', 126317000, 377973),
+  //   createData('France', 'FR', 67022000, 640679),
+  //   createData('United Kingdom', 'GB', 67545757, 242495),
+  //   createData('Russia', 'RU', 146793744, 17098246),
+  //   createData('Nigeria', 'NG', 200962417, 923768),
+  //   createData('Brazil', 'BR', 210147125, 8515767),
+  // ];
 const AdminProductSection = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  // const [page, setPage] = React.useState(0);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
   return (
     <div>
-        <div className='flex gap-5 mb-5'>
+        {/* <div className='flex gap-5 mb-5'>
             <div className='w-[400px] h-fit grid grid-cols-2 gap-3'>
                 <div className='flex items-center border-2 border-background-signup justify-between p-3 rounded-md h-fit'>
                     <div className='flex items-center gap-2'>
@@ -197,7 +197,7 @@ const AdminProductSection = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-        </div>
+        </div> */}
     </div>
   )
 }

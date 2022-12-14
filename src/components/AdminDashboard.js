@@ -15,96 +15,96 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 ChartJS.register(ArcElement, Tooltip, Legend);
-const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
+// const data = {
+//     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+//     datasets: [
+//       {
+//         label: '# of Votes',
+//         data: [12, 19, 3, 5, 2, 3],
+//         backgroundColor: [
+//           'rgba(255, 99, 132, 0.2)',
+//           'rgba(54, 162, 235, 0.2)',
+//           'rgba(255, 206, 86, 0.2)',
+//           'rgba(75, 192, 192, 0.2)',
+//           'rgba(153, 102, 255, 0.2)',
+//           'rgba(255, 159, 64, 0.2)',
+//         ],
+//         borderColor: [
+//           'rgba(255, 99, 132, 1)',
+//           'rgba(54, 162, 235, 1)',
+//           'rgba(255, 206, 86, 1)',
+//           'rgba(75, 192, 192, 1)',
+//           'rgba(153, 102, 255, 1)',
+//           'rgba(255, 159, 64, 1)',
+//         ],
+//         borderWidth: 1,
+//       },
+//     ],
+//   };
 
 
-  const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-      id: 'population',
-      label: 'Population',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'size',
-      label: 'Size\u00a0(km\u00b2)',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'density',
-      label: 'Density',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toFixed(2),
-    },
-  ];
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
+//   const columns = [
+//     { id: 'name', label: 'Name', minWidth: 170 },
+//     { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+//     {
+//       id: 'population',
+//       label: 'Population',
+//       minWidth: 170,
+//       align: 'right',
+//       format: (value) => value.toLocaleString('en-US'),
+//     },
+//     {
+//       id: 'size',
+//       label: 'Size\u00a0(km\u00b2)',
+//       minWidth: 170,
+//       align: 'right',
+//       format: (value) => value.toLocaleString('en-US'),
+//     },
+//     {
+//       id: 'density',
+//       label: 'Density',
+//       minWidth: 170,
+//       align: 'right',
+//       format: (value) => value.toFixed(2),
+//     },
+//   ];
+//   function createData(name, code, population, size) {
+//     const density = population / size;
+//     return { name, code, population, size, density };
+//   }
   
-  const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-  ];
+//   const rows = [
+//     createData('India', 'IN', 1324171354, 3287263),
+//     createData('China', 'CN', 1403500365, 9596961),
+//     createData('Italy', 'IT', 60483973, 301340),
+//     createData('United States', 'US', 327167434, 9833520),
+//     createData('Canada', 'CA', 37602103, 9984670),
+//     createData('Australia', 'AU', 25475400, 7692024),
+//     createData('Germany', 'DE', 83019200, 357578),
+//     createData('Ireland', 'IE', 4857000, 70273),
+//     createData('Mexico', 'MX', 126577691, 1972550),
+//     createData('Japan', 'JP', 126317000, 377973),
+//     createData('France', 'FR', 67022000, 640679),
+//     createData('United Kingdom', 'GB', 67545757, 242495),
+//     createData('Russia', 'RU', 146793744, 17098246),
+//     createData('Nigeria', 'NG', 200962417, 923768),
+//     createData('Brazil', 'BR', 210147125, 8515767),
+//   ];
 const AdminDashboard = () => {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    // const [page, setPage] = React.useState(0);
+    // const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+    // const handleChangePage = (event, newPage) => {
+    //     setPage(newPage);
+    // };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+    // const handleChangeRowsPerPage = (event) => {
+    //     setRowsPerPage(+event.target.value);
+    //     setPage(0);
+    // };
   return (
     <div>AdminDashboard
-        <div className='grid md:grid-cols-2 lg:grid-cols-4 my-5 gap-2'>
+        {/* <div className='grid md:grid-cols-2 lg:grid-cols-4 my-5 gap-2'>
             <div className='flex justify-between items-center border-2 border-background-signup px-4 py-3 rounded-lg'>
                 <div className='flex items-center gap-1'>
                     <BiUser size={30}/>
@@ -191,7 +191,7 @@ const AdminDashboard = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-        </div>
+        </div> */}
     </div>
   )
 }
