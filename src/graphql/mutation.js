@@ -110,4 +110,11 @@ const createProduct = gql`
         })
     }
 `
-export {addUser, activeOTP,login, resendOtp, forgotPassword, ResetPassword,createProductAuction, createProduct}
+const rechargeMoney = gql`
+    mutation rechargeMoney($amount:Float!){
+        rechargeMoney(amount:$amount){
+            Total_Money
+        }
+    }
+`
+export {addUser, activeOTP,login, resendOtp, forgotPassword, ResetPassword,createProductAuction, createProduct, rechargeMoney}

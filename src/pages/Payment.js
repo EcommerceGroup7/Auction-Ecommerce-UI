@@ -9,7 +9,7 @@ const Payment = () => {
     <>
         <Navbar/>
         <div className='lg:container mx-auto p-3'>
-            <div className='mt-20 mb-10 mx-auto'>
+            <div className='mt-20 mb-10 mx-auto -z-10'>
                 <Paypal/>
             </div>
             <Footer/>

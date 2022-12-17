@@ -29,6 +29,7 @@ import AdminBid from './admin/AdminBid';
 import AdminOrder from './admin/AdminOrder';
 import AdminProduct from './admin/AdminProduct';
 import AdminCurrency from './admin/AdminCurrency';
+import CheckoutPage from './pages/CheckoutPage';
 
 export const UserContext = createContext()
 function App() {
@@ -54,11 +55,12 @@ function App() {
               <Route path='/categories/:cate' element={<ListCategories/>}/>
               <Route path='/item/:cateItem' element={<ItemInfo/>}/> 
               <Route path='/currency' element={<Currency/>}/>
-              <Route path='/payment' element={<Payment/>}/>
+              <Route path='/payment/:paypal' element={<Payment/>}/>
               <Route path='/product' element={<ProductMangament/>}/>
               <Route path='/product/addItem' element={<AddItemPage/>}/>
               <Route path='/product/:productItem' element={<ProductItemPage/>}/>
               <Route path='/profile' element={<Profile/>}/>
+              <Route path='/checkout' element={<CheckoutPage/>}/>
             </Routes>
           </Router>
       </LocalizationProvider>

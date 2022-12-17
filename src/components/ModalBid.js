@@ -93,8 +93,6 @@ const ModalBid = ({isVisible, onClose,dataShowModal}) => {
                     </div>
                     <button disabled={!loading && data.getAvailableAuctionField.length===0 ? true : false} type='submit' className='inline-block border-background-signup px-6 py-2.5 text-black font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-link hover:shadow-lg transition duration-150 ease-in-out bg-white'>Add to Product Bid</button>
                     {!loading && data.getAvailableAuctionField.length===0 ? <p className='text-red-700'>Không thể lên sàn được thì không có Auction Field</p> : ''}
-                    {errorMutation === null && (!loading && data.getAvailableAuctionField.length!==0) ? '' : <p className='text-red-700'>{errorMutation}</p>}
-                    {successMutation === null (!loading && data.getAvailableAuctionField.length!==0) ?  '' : <p className='text-red-700'>{errorMutation}</p>}
                 </form>
             </div>
         </div>

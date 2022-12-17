@@ -289,23 +289,42 @@ const getMinTimeToDiscount = gql`
         getMinTimeToDiscount
     }
 `
+const getCurrentByUser = gql`
+    query getCurrentByUser($User_ID:String!){
+        getCurrentByUser(User_ID:$User_ID){
+            Currency_ID,
+            Total_Money
+        }
+    }
+`
+const getLastCurrencyLog = gql`
+    query getLastCurrencyLog($User_ID:String!){
+        getLastCurrencyLog(User_ID:$User_ID){
+            Currency_Log_ID,
+            Currency_Log_Value,
+        }
+    }
+`
 export {getSingleEmailUser, 
-    getPopulateCatalog, 
-    getListCategoryForSidebar,
-    getProductByCatalogName,
-    getAllProduct, 
-    getProductById, 
-    getSimilarProduct,
-    searchProduct,
-     getCatalogParent, 
-     getSubCatalog, 
-     getOperatingAuctionField,
-     getProductByUser,
-     getAvailableAuctionField,
-     getAuctioningProduct,
-     searchAuctioningProduct,
-     getAuctioningProductByCatalog,
-     getProductAuctionById,
-     getSimilartProductAuction, 
-     getMinTimeToDiscount
+        getPopulateCatalog, 
+        getListCategoryForSidebar,
+        getProductByCatalogName,
+        getAllProduct, 
+        getProductById, 
+        getSimilarProduct,
+        searchProduct,
+        getCatalogParent, 
+        getSubCatalog, 
+        getOperatingAuctionField,
+        getProductByUser,
+        getAvailableAuctionField,
+        getAuctioningProduct,
+        searchAuctioningProduct,
+        getAuctioningProductByCatalog,
+        getProductAuctionById,
+        getSimilartProductAuction, 
+        getMinTimeToDiscount,
+        getCurrentByUser,
+        getLastCurrencyLog
+
 }

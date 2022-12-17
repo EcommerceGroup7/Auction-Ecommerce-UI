@@ -1,111 +1,12 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import {AiFillCamera,AiOutlineSearch,AiFillPlusCircle} from 'react-icons/ai'
 import { BiChevronDown } from "react-icons/bi";
 import Stack from '@mui/material/Stack';
 import { TextField,Button, Modal,Box,Fab ,MenuItem} from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { getCatalogParent} from '../graphql/queries';
-// import { districtData } from '../dummydata/districtData';
+import axios from 'axios'
 
-
-const districtData = [
-  {
-      id:"1",
-      district:"District 1"
-  },
-  {
-      id:"2",
-      district:"District 2"
-  },
-  {
-      id:"3",
-      district:"District 3"
-  },
-  {
-      id:"4",
-      district:"District 4"
-  },
-  {
-      id:"5",
-      district:"District 5"
-  },
-  {
-      id:"6",
-      district:"District 6"
-  },
-  {
-      id:"7",
-      district:"District 7"
-  },
-  {
-      id:"8",
-      district:"District 8"
-  },
-  {
-      id:"9",
-      district:"District 9"
-  },
-  {
-      id:"10",
-      district:"District 10"
-  },
-  {
-      id:"11",
-      district:"District 11"
-  },
-  {
-      id:"12",
-      district:"District 12"
-  },
-  {
-      id:"13",
-      district:"Thu Duc"
-  },
-  {
-      id:"14",
-      district:"Phu Nhuan"
-  },
-  {
-      id:"15",
-      district:"Tan Binh"
-  },
-  {
-      id:"16",
-      district:"Binh Thanh"
-  },
-  {
-      id:"17",
-      district:"Go Vap"
-  },
-  {
-      id:"18",
-      district:"Tan Phu"
-  },
-  {
-      id:"19",
-      district:"Binh Tan"
-  },
-  {
-      id:"20",
-      district:"Binh Chanh"
-  },
-  {
-      id:"21",
-      district:"Hoc Mon"
-  },
-  {
-      id:"22",
-      district:"Cu Chi"
-  },
-  {
-      id:"23",
-      district:"Can Gio"
-  },
-  {
-      id:"24",
-      district:"Nha Be"
-  },
-]
 const ModalEditUser = ({isVisible,onClose}) => {
     const style = {
       position: 'absolute',
@@ -127,16 +28,67 @@ const ModalEditUser = ({isVisible,onClose}) => {
     const [selectedTest, setSelectedTest] = useState("");
     const [openTest, setOpenTest] = useState(false); 
 
-
+    const [dataDistrict, setDataDistrict] = useState(null)
+    const [dataWard, setDataWard] = useState(null)
     const [district,setDistrict] = useState('')
+    const [ward,setWard] = useState('')
+    const [wardName,setWardName] = useState('')
     const {loading,error,data} = useQuery(getCatalogParent)
+
+    const getDataDistrict = async()=>{
+        try {
+            let res = await axios.get('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district',{
+                params:{
+                    "province_id":202
+                },
+                headers:{
+                    'Token':'48e7ac19-7c71-11ed-a2ce-1e68bf6263c5',
+                    'Content-Type':'application/json'
+                }
+            })
+            setDataDistrict(res.data)
+            console.log(res);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+    
+    const getDataWard = async(wardId)=>{
+        let data = JSON.stringify({
+            "district_id": wardId
+          });
+          
+          let config = {
+            method: 'post',
+            url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id',
+            headers: { 
+              'Token': '48e7ac19-7c71-11ed-a2ce-1e68bf6263c5', 
+              'Content-Type': 'application/json'
+            },
+            data : data
+          };
+          
+          await axios(config)
+          .then(function (response) {
+            setDataWard(response.data)
+            console.log(response.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+          
+        console.log(wardId);
+    }
     const handleOpenModalChangePass = () => setOpenModalChangePass(true);
     const handleCloseModalChangePass = () => setOpenModalChangePass(false);
     const handleOpenModalAddAddress = () => setOpenModalAddAddress(true);
     const handleCloseModalAddAddress = () => setOpenModalAddAddress(false);
     const handleChangDistrict = (e)=>{
-      setDistrict(e.target.value)
+        setDistrict(e.target.value)
     }
+    const handleChangWard = (e)=>{
+        setWard(e.target.value)
+      }
     const uploadImage = async (e) => {
       console.log(e.target.files);
       const file = e.target.files[0];
@@ -157,6 +109,10 @@ const ModalEditUser = ({isVisible,onClose}) => {
           };
       });
   };
+  useEffect(()=>{
+    getDataDistrict()
+    // getDataWard()
+  },[])
     if(!isVisible) return null
   return (
     <div className='fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-10'>
@@ -254,7 +210,7 @@ const ModalEditUser = ({isVisible,onClose}) => {
                                             aria-labelledby="modal-modal-title"
                                             aria-describedby="modal-modal-description"
                                           >
-                                              <Box sx={style}>
+                                              <Box sx={style} noValidate >
                                                 <form action="">
                                                   <h1 className='text-center text-xl font-medium text-textcolor mb-2'>Add Address</h1>
                                                   <Stack className='mb-3'>
@@ -271,11 +227,24 @@ const ModalEditUser = ({isVisible,onClose}) => {
                                                           onChange={handleChangDistrict}
                                                           select
                                                           sx={{width:"100%"}}
+                                                          
                                                         >
-                                                          {districtData.map((itemDistrict,indexDistrict)=>(
-                                                            <MenuItem value={itemDistrict.district} key={itemDistrict.id}>{itemDistrict.district}</MenuItem>
-                                                          ))}
-                                                        </TextField>                                                                                                   
+                                                          {dataDistrict ? dataDistrict.data.map((itemDistrict,indexDistrict)=>(
+                                                            <MenuItem value={itemDistrict.DistrictName} onClick={()=>getDataWard(itemDistrict.DistrictID)} key={itemDistrict.DistrictID}>{itemDistrict.DistrictName}</MenuItem>
+                                                          )): <MenuItem disabled>Loading</MenuItem>}
+                                                        </TextField>     
+                                                        <TextField
+                                                            id="demo-simple-select"
+                                                            value={ward}
+                                                            label="Ward"
+                                                            onChange={handleChangWard}
+                                                            select
+                                                            sx={{width:"100%"}}
+                                                        >
+                                                          {dataWard ? dataWard.data.map((itemWard,indexWard)=>(
+                                                            <MenuItem value={itemWard.WardName} key={itemWard.WardCode}>{itemWard.WardName}</MenuItem>
+                                                          )):<MenuItem disabled> Loading</MenuItem>}
+                                                        </TextField>                                                                                                    
                                                   </Stack>
                                                   <Stack className='mb-3'>
                                                       <TextField id="outlined-basic" label="Address" variant="outlined"/>

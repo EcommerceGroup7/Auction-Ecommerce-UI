@@ -34,7 +34,7 @@ const Navbar = () => {
     setOpenModalUser(!openModalUser)
   }
   return (
-    <header className="z-10 mb-2 px-2 shadow bg-background-signup fixed top-0 left-0 w-full">
+    <header className="z-[200] mb-2 px-2 shadow bg-background-signup fixed top-0 left-0 w-full">
       <div className="relative mx-auto flex flex-col px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
         <Link className="flex items-center text-3xl font-black" to="/">
           <h1 className='font-logo text-logo-color'>FreshAuc</h1>
@@ -106,7 +106,7 @@ const Navbar = () => {
                                 <Link>Order History</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link>Notification</Link>
+                                <Link to='/currency'>Wallet</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
                                 <Link>Current Bid</Link>
