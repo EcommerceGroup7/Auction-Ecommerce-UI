@@ -7,6 +7,7 @@ import { useFormik } from 'formik'
 import { signInValidation } from '../schema/schemaindex'
 const Signin = () => {
   const navigate = useNavigate()
+  
   const [loginUser, dataMutation] = useMutation(login)
   const [errorUserOrEmail, setErrorUserOrEmail] = useState('')
   const [errorPass, setErrorPass] = useState('')
@@ -32,6 +33,7 @@ const Signin = () => {
             passWord: values.password,
           },
         })
+        
       } catch (error) {
         if (error.message.includes('user')) {
           setErrorUserOrEmail(error.message)
@@ -59,7 +61,7 @@ const Signin = () => {
     navigate,
     dataMutation.error,
   ])
-  console.log(dataMutation)
+  // console.log(dataMutation)
   return (
     <div>
       <div className="grid grid-col-1 md:grid-cols-2">

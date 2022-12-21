@@ -7,6 +7,7 @@ import Countdown from './Countdown'
 const ListItem = () => {
     const [page, setPage] = useState(0)
     const [pageSearch, setPageSearch] = useState(0)
+    const [userId, setUserId] = useState('')
     const param = useParams()
     const {searchValue,setSearchValue} = useContext(UserContext)
     console.log(param)
@@ -25,6 +26,13 @@ const ListItem = () => {
     useEffect(()=>{
         console.log(dataItem);
         console.log(dataAll);
+        if(localStorage.getItem('token')===null){
+            setUserId('')
+        }
+        else{
+            // console.log(JSON.parse(localStorage.getItem('token')).userId.id)
+            setUserId(JSON.parse(localStorage.getItem('token')).userId.id)
+        }
         const minInterval = setInterval(()=>{
             if(param.cate === 'all'){
                 refetch()
@@ -41,24 +49,17 @@ const ListItem = () => {
             }
         },(!loadingMinTime && dataMinTime.getMinTimeToDiscount*60*1000 + 1500))
         return ()=>clearInterval(minInterval)
-    },[dataItem,dataAll])
+    },[dataItem,dataAll,dataMinTime,loadingMinTime,searchValue,param.cate,refetchProductCatalog,refetchSearch,refetch])
   return (
     <div className='sm:col-span-5 md:col-span-4 lg:col-span-4 px-3 '>
         <div className='flex justify-between'>
             <h1 className='text-lg uppercase font-medium'>{param.cate} items</h1>
-            <div>
-                <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black">
-                    <option defaultValue="">Sort by</option>
-                    <option value="">Low to High</option>
-                    <option value="">High to Low</option>
-                </select>
-            </div>
         </div>
         {param.cate === "all" ? (
             <React.Fragment>
                 <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 mt-4'>
                     {!loadingAll && dataAll.getAuctioningProduct.map((itemAll,indexAll)=>(
-                        <Link className='bg-link p-3 rounded-lg' key={itemAll.Product_Auction_ID} to={`/item/${itemAll.Product_Auction_ID}`}>
+                        <Link className='bg-link p-3 rounded-lg' key={itemAll.Product_Auction_ID} to={userId===itemAll.User_ID.User_ID ? `/product/${itemAll.Product_Auction_ID}` :`/item/${itemAll.Product_Auction_ID}`}>
                             <div className='grid grid-cols-2 grid-rows-2 gap-1'>
                                 {itemAll.Product_ID.Product_Image.slice(0,2).map((itemImg,indexItemImg)=>(
                                     <div className='row-span-2' key={itemImg.Product_Image_ID}>
@@ -66,9 +67,9 @@ const ListItem = () => {
                                     </div>
                                 ))}
                             </div>
-                            <h1>Product Name: {itemAll.Product_ID.Product_Name}</h1>
-                            <h1>Starting Price: {itemAll.Starting_Price}$</h1>
-                            <h1>Current Price: {itemAll.Current_Price}$</h1>
+                            <h1 className='text-lg font-semibold'>{itemAll.Product_ID.Product_Name}</h1>
+                            <h1>Starting Price: <span className='font-semibold'>{itemAll.Starting_Price}$</span></h1>
+                            <h1>Current Price: <span className='font-semibold'>{itemAll.Current_Price}$</span></h1>
                             <Countdown start={itemAll.Auction_Field_ID.Start_Time} end={itemAll.Auction_Field_ID.End_Time} />
                         </Link>
                     ))}
@@ -78,7 +79,7 @@ const ListItem = () => {
                 <React.Fragment>
                     <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 mt-4'>
                         {!loadingItem && dataItem.getAuctioningProductByCatalog.map((item,index)=>(
-                            <Link className='bg-link p-3 rounded-lg' key={item.Product_Auction_ID} to={`/item/${item.Product_Auction_ID}`}>
+                            <Link className='bg-link p-3 rounded-lg' key={item.Product_Auction_ID} to={userId===item.User_ID.User_ID ? `/product/${item.Product_Auction_ID}` :`/item/${item.Product_Auction_ID}`}>
                                 <div className='grid grid-cols-2 grid-rows-2 gap-1'>
                                     {item.Product_ID.Product_Image.slice(0,2).map((itemImg,indexItemImg)=>(
                                         <div className='row-span-2' key={itemImg.Product_Image_ID}>
@@ -86,9 +87,9 @@ const ListItem = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <h1>Product Name: {item.Product_ID.Product_Name}</h1>
-                                <h1>Starting Price: {item.Starting_Price}</h1>
-                                <h1>Current Price: {item.Current_Price}</h1>
+                                <h1 className='text-lg font-semibold'>Product Name: {item.Product_ID.Product_Name}</h1>
+                                <h1>Starting Price: <span className='font-semibold'>{item.Starting_Price}$</span></h1>
+                                <h1>Current Price: <span className='font-semibold'>{item.Current_Price}$</span></h1>
                                 <Countdown start={item.Auction_Field_ID.Start_Time} end={item.Auction_Field_ID.End_Time}/>
                             </Link>
                         ))}
@@ -98,7 +99,7 @@ const ListItem = () => {
             <React.Fragment>
                 <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 mt-4'>
                     {!loadingSearch && dataSearch.searchAuctioningProduct.map((itemSearch,index)=>(
-                        <Link className='bg-link p-3 rounded-lg' key={itemSearch.Product_Auction_ID} to={`/item/${itemSearch.Product_Auction_ID}`}>
+                        <Link className='bg-link p-3 rounded-lg' key={itemSearch.Product_Auction_ID} to={userId===itemSearch.User_ID.User_ID ? `/product/${itemSearch.Product_Auction_ID}` :`/item/${itemSearch.Product_Auction_ID}`}>
                             <div className='grid grid-cols-2 grid-rows-2 gap-1'>
                                 {itemSearch.Product_ID.Product_Image.slice(0,2).map((itemImg,indexItemImg)=>(
                                     <div className='row-span-2' key={itemImg.Product_Image_ID}>
@@ -106,9 +107,9 @@ const ListItem = () => {
                                     </div>
                                 ))}
                             </div>
-                            <h1>Product Name: {itemSearch.Product_ID.Product_Name}</h1>
-                            <h1>Starting Price: {itemSearch.Starting_Price}</h1>
-                            <h1>Current Price: {itemSearch.Current_Price}</h1>
+                            <h1 className='text-lg font-semibold'>Product Name: {itemSearch.Product_ID.Product_Name}</h1>
+                            <h1>Starting Price: <span className='font-semibold'>{itemSearch.Starting_Price}$</span></h1>
+                            <h1>Current Price: <span className='font-semibold'>{itemSearch.Current_Price}$</span></h1>
                             <Countdown start={itemSearch.Auction_Field_ID.Start_Time} end={itemSearch.Auction_Field_ID.End_Time}/>
                         </Link>
                     ))}

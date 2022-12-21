@@ -45,8 +45,9 @@ const ProductList = () => {
                         <h1>Price: ${itemProBid.Price}</h1>
                     </Link>
                     <div className='mt-3 z-10'>
-                        <button onClick={()=>handleModalBid(itemProBid)} className='inline-block px-6 py-2.5 bg-background-signup text-black font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-link hover:shadow-lg focus:bg-link focus:shadow-lg focus:outline-none focus:ring-0 active:bg-link active:shadow-lg transition duration-150 ease-in-out'>Update Bid</button>
+                        <button onClick={()=>handleModalBid(itemProBid)} disabled={itemProBid.Weight === 0 ? true :false} className={`inline-block px-6 py-2.5 bg-background-signup text-black font-medium text-xs leading-tight uppercase rounded shadow-md ${itemProBid.Weight === 0 ? `` : `hover:bg-link hover:shadow-lg focus:bg-link focus:shadow-lg focus:outline-none focus:ring-0 active:bg-link active:shadow-lg transition duration-150 ease-in-out`}`}>Update Bid</button>
                     </div>
+                    {itemProBid.Weight === 0 && <p className='text-red-700 text-base'>Item is out of stock</p>}
                 </div>
             ))}
             <div className='flex justify-center items-center'>

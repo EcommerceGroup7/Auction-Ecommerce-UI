@@ -38,3 +38,9 @@ export const newPassword = yup.object().shape({
     newPass:yup.string().min(6,"Password must be at least 6 characters").required('Password is a required field'),
     confirmPass:yup.string().oneOf([yup.ref("newPass")], "Password must be match"),
 })
+export const addAddress = yup.object().shape({
+    addressName:yup.string().required('Must have a address name'),
+    addressDistrict:yup.string().required('Must have address district'),
+    recieverName:yup.string().required('Must have reciever name'),
+    phone:yup.string().required('Must have phone')
+})

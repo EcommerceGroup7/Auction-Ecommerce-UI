@@ -16,7 +16,7 @@ const Emailreset = () => {
     handleSubmit,
   } = useFormik({
     initialValues: {
-      emailreset: '',
+      emailreset:'',
     },
     validationSchema: emailReset,
     onSubmit: async (values) => {
@@ -32,29 +32,27 @@ const Emailreset = () => {
       }
     },
   })
-  const {data} = useQuery(getSingleEmailUser, {
+  const {loading,errors:errorGetSingle,data} = useQuery(getSingleEmailUser, {
     variables:{
       Email:values.emailreset
     }
   })  
-  useEffect(()=>{
-    console.log(data);
-  },[data])
   useEffect(() => {
     if (!dataMutation.loading && dataMutation.called) {
       if (dataMutation.error) {
         console.log(dataMutation.error.message)
       } else {
-        localStorage.setItem('token', data.getUserByEmail.User_ID)
+        localStorage.setItem('token', !loading && JSON.stringify(data.getUserByEmail))
         navigate(`/resetpassword`)
       }
     }
+    console.log(data);
   }, [
     dataMutation.loading,
     dataMutation.called,
-    data.getUserByEmail.User_ID,
     navigate,
     dataMutation.error,
+    data,loading
   ])
   // console.log(data);
   return (

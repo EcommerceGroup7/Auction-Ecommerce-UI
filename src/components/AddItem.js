@@ -3,7 +3,7 @@ import { BiChevronDown } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useQuery,useMutation } from '@apollo/client';
 import { createProduct } from '../graphql/mutation';
-import { getCatalogParent , getSubCatalog} from '../graphql/queries';
+import { getCatalogParent , getSubCatalog,getProductByUser} from '../graphql/queries';
 import { useFormik } from 'formik';
 import { productAddValidation } from '../schema/schemaindex';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,16 @@ const AddItem = () => {
     const [selectedSub, setSelectedSub] = useState("");
     const [selectedSubID, setSelectedSubID] = useState("");
     const [openSub, setOpenSub] = useState(false);
-    const [addProduct,dataMutation] = useMutation(createProduct)
+    const [addProduct,dataMutation] = useMutation(createProduct,{
+        refetchQueries:[
+            {
+                query:getProductByUser,
+                variables:{
+                    User_ID:localStorage.getItem('token') === null ? '' : JSON.parse(localStorage.getItem('token')).userId.id
+                }
+            }
+        ]
+    })
     const {values, errors:errorsHandle, touched, handleBlur,handleChange,handleSubmit } = useFormik({
         initialValues:{
             productName:'',

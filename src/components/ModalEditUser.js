@@ -29,10 +29,7 @@ const ModalEditUser = ({isVisible,onClose}) => {
     const [openTest, setOpenTest] = useState(false); 
 
     const [dataDistrict, setDataDistrict] = useState(null)
-    const [dataWard, setDataWard] = useState(null)
     const [district,setDistrict] = useState('')
-    const [ward,setWard] = useState('')
-    const [wardName,setWardName] = useState('')
     const {loading,error,data} = useQuery(getCatalogParent)
 
     const getDataDistrict = async()=>{
@@ -52,33 +49,6 @@ const ModalEditUser = ({isVisible,onClose}) => {
             console.log(error.message);
         }
     }
-    
-    const getDataWard = async(wardId)=>{
-        let data = JSON.stringify({
-            "district_id": wardId
-          });
-          
-          let config = {
-            method: 'post',
-            url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id',
-            headers: { 
-              'Token': '48e7ac19-7c71-11ed-a2ce-1e68bf6263c5', 
-              'Content-Type': 'application/json'
-            },
-            data : data
-          };
-          
-          await axios(config)
-          .then(function (response) {
-            setDataWard(response.data)
-            console.log(response.data);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-          
-        console.log(wardId);
-    }
     const handleOpenModalChangePass = () => setOpenModalChangePass(true);
     const handleCloseModalChangePass = () => setOpenModalChangePass(false);
     const handleOpenModalAddAddress = () => setOpenModalAddAddress(true);
@@ -86,9 +56,6 @@ const ModalEditUser = ({isVisible,onClose}) => {
     const handleChangDistrict = (e)=>{
         setDistrict(e.target.value)
     }
-    const handleChangWard = (e)=>{
-        setWard(e.target.value)
-      }
     const uploadImage = async (e) => {
       console.log(e.target.files);
       const file = e.target.files[0];
@@ -230,21 +197,9 @@ const ModalEditUser = ({isVisible,onClose}) => {
                                                           
                                                         >
                                                           {dataDistrict ? dataDistrict.data.map((itemDistrict,indexDistrict)=>(
-                                                            <MenuItem value={itemDistrict.DistrictName} onClick={()=>getDataWard(itemDistrict.DistrictID)} key={itemDistrict.DistrictID}>{itemDistrict.DistrictName}</MenuItem>
+                                                            <MenuItem value={itemDistrict.DistrictName} key={itemDistrict.DistrictID}>{itemDistrict.DistrictName}</MenuItem>
                                                           )): <MenuItem disabled>Loading</MenuItem>}
-                                                        </TextField>     
-                                                        <TextField
-                                                            id="demo-simple-select"
-                                                            value={ward}
-                                                            label="Ward"
-                                                            onChange={handleChangWard}
-                                                            select
-                                                            sx={{width:"100%"}}
-                                                        >
-                                                          {dataWard ? dataWard.data.map((itemWard,indexWard)=>(
-                                                            <MenuItem value={itemWard.WardName} key={itemWard.WardCode}>{itemWard.WardName}</MenuItem>
-                                                          )):<MenuItem disabled> Loading</MenuItem>}
-                                                        </TextField>                                                                                                    
+                                                        </TextField>                                                                                                        
                                                   </Stack>
                                                   <Stack className='mb-3'>
                                                       <TextField id="outlined-basic" label="Address" variant="outlined"/>

@@ -6,7 +6,7 @@ import { ResetPassword } from '../graphql/mutation'
 import { useMutation } from '@apollo/client'
 const Resetpassword = () => {
     const navigate = useNavigate()
-    const userid = localStorage.getItem('token')
+    const userid = localStorage.getItem('token')===null?"":JSON.parse(localStorage.getItem('token')).User_ID
     const [errorOtp, setErrorOtp] = useState('')
     const [Resetpassword, dataMutationReset] = useMutation(ResetPassword)
     const {values,errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({

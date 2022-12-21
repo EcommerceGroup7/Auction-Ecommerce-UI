@@ -117,4 +117,55 @@ const rechargeMoney = gql`
         }
     }
 `
-export {addUser, activeOTP,login, resendOtp, forgotPassword, ResetPassword,createProductAuction, createProduct, rechargeMoney}
+const createUserBid = gql`
+    mutation createUserBid($Product_Auction_ID:String!, $Price:Float!){
+        createUserBid(createUserBidInput:{
+            Product_Auction_ID:$Product_Auction_ID,
+            Price:$Price
+        }){
+            User_ID,
+            Product_Auction_ID,
+            Price,
+            Time
+        }
+    }
+`
+const orderProductAuction = gql`
+    mutation orderProductAuction($Product_Auction_ID:String!){
+        orderProductAuction(Product_Auction_ID:$Product_Auction_ID){
+            Order_ID,
+            Total_Price,
+            Status,
+        }
+    }
+`
+const createAddress = gql`
+    mutation createAddress($Address_Name:String!, $Address_District:String!, $Reciever_Name:String!, $Phone:String!,$District_ID:Int!){
+        createAddress(createAddressInput:{
+            Address_Name:$Address_Name,
+            Address_District:$Address_District,
+            Reciever_Name:$Reciever_Name,
+            Phone:$Phone,
+            District_ID:$District_ID
+        }){
+            Address_ID,
+            User_ID{
+                User_ID
+            },
+            District_ID
+        }
+    }
+`
+const createPayment = gql`
+    mutation createPayment($Order_ID:[String!]!, $total:Float!,$method:String!){
+        createPayment(createPaymentInput:{
+            Order_ID:$Order_ID,
+            total:$total,
+            method:$method
+        }){
+            Payment_ID,
+            Total,
+        }
+    }
+`
+export {addUser, activeOTP,login, resendOtp, forgotPassword, ResetPassword,createProductAuction, createProduct, rechargeMoney, createUserBid,orderProductAuction,createAddress,createPayment}

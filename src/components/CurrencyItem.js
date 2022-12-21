@@ -42,7 +42,7 @@ const CurrencyItem = () => {
                     </button>
                 </div>
                 <div className='flex justify-evenly'>
-                    <Link to='/payment/recharge' className='px-6 py-2 bg-background-signup rounded-full'>Recharge</Link>
+                    <Link to='/wallet/recharge' className='px-6 py-2 bg-background-signup rounded-full'>Recharge</Link>
                     <button className='px-6 py-2 bg-background-signup rounded-full'>Withdraw money</button>
                 </div>
             </div>
@@ -51,41 +51,18 @@ const CurrencyItem = () => {
             {!loadingLastCur && dataLastCur.getLastCurrencyLog.map((itemLastCur,indexLastCur)=>(
                 <div key={itemLastCur.Currency_Log_ID} className='flex justify-between items-center py-2 border-b-2'>
                     <div className='flex items-center gap-2 p-3 border-2 border-background-signup w-fit rounded-md'>
-                        <GiReceiveMoney size={40} color={"#13A779"}/>
-                        <h1>Recharge</h1>
+                        {itemLastCur.Currency_Log_Value.includes("-") ? <GiPayMoney size={40} color={"#DC143C"}/>  : <GiReceiveMoney size={40} color={"#13A779"}/>}
+                        {itemLastCur.Currency_Log_Value.includes("-") ? <h1>Withdraw</h1>  : <h1>Deposit</h1>}
                     </div>
                     <div>
-                        <h1 className='text-lg font-semibold text-[#13A779]'>$ {itemLastCur.Currency_Log_Value}</h1>
+
+                        {
+                            itemLastCur.Currency_Log_Value.includes("-") ? <h1 className='text-lg font-semibold text-[#DC143C]'>${itemLastCur.Currency_Log_Value}</h1> : <h1 className='text-lg font-semibold text-[#13A779]'>${itemLastCur.Currency_Log_Value}</h1>
+                        }
+                        
                     </div>
                 </div>
             ))}
-            <div className='flex justify-between items-center py-2 border-b-2'>
-                <div className='flex items-center gap-2 p-3 border-2 border-background-signup w-fit rounded-md'>
-                    <GiReceiveMoney size={40} color={"#13A779"}/>
-                    <h1>Recharge</h1>
-                </div>
-                <div>
-                    <h1 className='text-lg font-semibold text-[#13A779]'>$ +15</h1>
-                </div>
-            </div>
-            <div className='flex justify-between items-center py-2 border-b-2'>
-                <div className='flex items-center gap-2 p-3 border-2 border-background-signup w-fit rounded-md'>
-                    <GiTakeMyMoney size={40} color={"#13A779"}/>
-                    <h1>Recharge</h1>
-                </div>
-                <div>
-                    <h1 className='text-lg font-semibold text-[#13A779]'>$ +15</h1>
-                </div>
-            </div>
-            <div className='flex justify-between items-center py-2 border-b-2'>
-                <div className='flex items-center gap-2 p-3 border-2 border-background-signup w-fit rounded-md'>
-                    <GiPayMoney size={40} color={"#13A779"}/>
-                    <h1>Recharge</h1>
-                </div>
-                <div>
-                    <h1 className='text-lg font-semibold text-[#13A779]'>$ +15</h1>
-                </div>
-            </div>
         </div>
     
         

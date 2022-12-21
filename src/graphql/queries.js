@@ -157,6 +157,9 @@ const getAuctioningProduct = gql`
     query getAuctioningProduct{
         getAuctioningProduct{
             Product_Auction_ID,
+            User_ID{
+                User_ID
+            },
             Starting_Price,
             Current_Price,
             Discount_Rate,
@@ -187,6 +190,9 @@ const searchAuctioningProduct = gql`
             Current_Price,
             Discount_Rate,
             isSold,
+            User_ID{
+                User_ID
+            },
             Auction_Field_ID{
                 Auction_Field_ID,
                 Start_Time,
@@ -213,6 +219,9 @@ const getAuctioningProductByCatalog = gql`
             Current_Price,
             Discount_Rate,
             isSold,
+            User_ID{
+                User_ID
+            },
             Auction_Field_ID{
                 Auction_Field_ID,
                 Start_Time,
@@ -266,6 +275,9 @@ const getSimilartProductAuction = gql`
             Current_Price,
             Discount_Rate,
             isSold,
+            User_ID{
+                User_ID
+            },
             Auction_Field_ID{
                 Auction_Field_ID,
                 Start_Time,
@@ -305,6 +317,96 @@ const getLastCurrencyLog = gql`
         }
     }
 `
+const getCurrentBid = gql`
+    query getCurrentBid($Product_Auction_ID:String!, $User_ID:String!){
+        getCurrentBid(getCurrentBidInput:{
+            Product_Auction_ID:$Product_Auction_ID,
+            User_ID:$User_ID
+        }){
+            User_ID,
+            Product_Auction_ID,
+            Price,
+            Time
+        }
+    }
+`
+const getUserById = gql`
+    query getUserById($User_ID:String!){
+        getUserById(User_ID:$User_ID){
+            User_ID,
+            User_First_Name,
+            User_Last_Name,
+            User_Name,
+            Email,
+            Phone,
+            Address{
+                Address_ID,
+                Reciever_Name,
+                Phone,
+                Address_Name,
+                Address_District,
+                District_ID
+            },
+            Default_Address_ID{
+                Address_ID
+                Reciever_Name,
+                Phone,
+                Address_Name,
+                Address_District,
+                District_ID
+            }
+            Shop_Name,
+            User_Image_Url,
+        }
+    }
+`
+const getUserOrder = gql`
+    query getUserOrder($User_ID:String!){
+        getUserOrder(User_ID:$User_ID){
+            Order_ID,
+            Total_Price,
+            Status,
+            Product_Auction_ID{
+                Product_ID{
+                    Product_Name,
+                    Product_Image{
+                        Product_Image_Url
+                    }
+                }
+                Weight,
+            },
+            Address_ID{
+                District_ID
+            }
+        }
+    }
+`
+const getLastestPayment = gql`
+    query getLastestPayment($Payment_ID:String!){
+        getLastestPayment(Payment_ID:$Payment_ID){
+            Payment_ID,
+            Total,
+        }
+    }
+`
+const getUserBidding = gql`
+    query getUserBidding($User_ID:String!){
+        getUserBidding(User_ID:$User_ID){
+            Product_Auction{
+                Product_Auction_ID,
+                Current_Price,
+                Product_ID{
+                    Product_Name,
+                    Product_Image{
+                    Product_Image_Url
+                    }
+                }
+            },
+            Price,
+            Time
+        }
+    }
+`
 export {getSingleEmailUser, 
         getPopulateCatalog, 
         getListCategoryForSidebar,
@@ -325,6 +427,10 @@ export {getSingleEmailUser,
         getSimilartProductAuction, 
         getMinTimeToDiscount,
         getCurrentByUser,
-        getLastCurrencyLog
-
+        getLastCurrencyLog,
+        getCurrentBid,
+        getUserById,
+        getUserOrder,
+        getLastestPayment,
+        getUserBidding
 }

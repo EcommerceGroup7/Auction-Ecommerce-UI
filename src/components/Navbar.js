@@ -7,7 +7,7 @@ const Navbar = () => {
   const [checkUser, setCheckUser] = useState(false)
   const [openModalUser, setOpenModalUser] = useState(false)
   const [userName,setUserName] = useState('')
-  const {searchValue,setSearchValue} = useContext(UserContext)
+  const {searchValue,setSearchValue,cartValue} = useContext(UserContext)
   const navigate = useNavigate()
   const onSearchSubmit =  (e) =>{
     e.preventDefault()
@@ -85,7 +85,7 @@ const Navbar = () => {
                     <Link className='relative cursor-pointer'>
                       <AiOutlineShoppingCart className='w-7 h-7'/>
                       <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-white flex justify-center items-center'>
-                        <span className=''>2</span>
+                        <span className=''>{cartValue}</span>
                       </div>
                     </Link>
                   </li>
@@ -100,25 +100,22 @@ const Navbar = () => {
                                 <h1>{userName}</h1>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link to='/product'>Product Manage</Link>
+                                <Link to='/product' className='block w-full'>Product Manage</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link>Order History</Link>
+                                <Link className='block w-full'>Order History</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link to='/currency'>Wallet</Link>
+                                <Link to='/currency' className='block w-full'>Wallet</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link>Current Bid</Link>
+                                <Link to='/currentBid' className='block w-full'>Current Bid</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link to='/profile'>View Profile</Link>
-                              </li>
-                              <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link>Currency</Link>
+                                <Link to='/profile' className='block w-full'>View Profile</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg' onClick={isLogOut}>
-                                <span>Logout</span>
+                                <span className='block w-full'>Logout</span>
                               </li>
                             </ul>
                           </div>

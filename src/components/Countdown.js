@@ -27,7 +27,7 @@ const Countdown = ({start,end}) => {
         return `${days} day : ${hours} hour : ${minutes} minute : ${seconds} second`
     } 
   return (
-    <div>
+    <div className=''>
       Count down: {getFormattedTime(timeSum)}
     </div>
   )
