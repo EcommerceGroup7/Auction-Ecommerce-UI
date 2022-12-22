@@ -4,6 +4,7 @@ import ItemCard from '../components/ItemCard'
 import Navbar from '../components/Navbar'
 
 const ItemInfo = () => {
+  
   return (
     <>
         <Navbar/>

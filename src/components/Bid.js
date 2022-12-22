@@ -20,7 +20,7 @@ const Bid = () => {
         }
     },[])
   return (
-    <LayoutCartAndBid>
+    <LayoutCartAndBid text="Current Bid">
         <div className='grid lg:grid-cols-7 gap-5'>
             <div className='col-span-7 h-max '>
                 <div className='grid grid-cols-5 bg-background-signup rounded-t-2xl py-2 justify-items-center mb-3'>
@@ -29,7 +29,7 @@ const Bid = () => {
                         <h1>Product</h1>
                     </div>
                     <div className='font-semibold'>
-                        <h1>Current Bid</h1>
+                        <h1>Current Price</h1>
                     </div>
                     <div className='font-semibold'>
                         <h1>Bidden</h1>

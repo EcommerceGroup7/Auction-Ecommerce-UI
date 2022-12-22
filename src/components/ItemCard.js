@@ -1,7 +1,7 @@
 import React, {useEffect, useState,useContext} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery,useMutation } from '@apollo/client'
-import {  getProductAuctionById, getSimilartProductAuction,getMinTimeToDiscount,getCurrentBid} from '../graphql/queries'
+import {  getUserById,getProductAuctionById, getSimilartProductAuction,getMinTimeToDiscount,getCurrentBid} from '../graphql/queries'
 import { createUserBid, orderProductAuction } from '../graphql/mutation'
 import Countdown from './Countdown'
 import { UserContext } from '../App'
@@ -79,16 +79,26 @@ const ItemCard = () => {
         }
     })
     const {loading:loadingMinTime, error:errorMinTime, data:dataMinTime} = useQuery(getMinTimeToDiscount)
+    const {loading:loaidingUser, error:errorUser,data:dataUser} = useQuery(getUserById,{
+        variables:{
+            User_ID:localStorage.getItem('token') === null ? '' : JSON.parse(localStorage.getItem('token')).userId.id
+        }
+    })
     const handleClickOrderProductAuc = async() =>{
         try{
-            setCartValue(cartValue+1)
-            await orderProductAuc({
-                variables:{
-                    Product_Auction_ID:param.cateItem
-                }
-            })
-            buySuccess()
-            navigate('/checkout')
+            if(!loaidingUser && dataUser.getUserById.Address.length === 0){
+                alert("You need add your address to buy item")
+                navigate('/profile')
+            }else{
+                await orderProductAuc({
+                    variables:{
+                        Product_Auction_ID:param.cateItem
+                    }
+                })
+                alert('You have buy this item, please payment for it')
+                navigate('/checkout')
+            }
+            // setCartValue(cartValue+1)
         }
         catch(err){
             console.log(err.message);
@@ -138,7 +148,7 @@ const ItemCard = () => {
             refetchSimilar({
                 Product_Auction_ID:param.cateItem
             })
-        },(!loadingMinTime && dataMinTime?.getMinTimeToDiscount * 60 *1000 + 1500))
+        },(!loadingMinTime && dataMinTime?.getMinTimeToDiscount * 60 *1000 + 1000))
         return ()=>clearInterval(intervalMinTime)
     },[dataCurBid,dataMutation.loading,dataMutation.called,dataMutation.error,loadingCurItem,refecthGetId,refetchSimilar,loadingMinTime,dataMinTime,param.cateItem])
   return (
@@ -181,7 +191,7 @@ const ItemCard = () => {
                             <div className='flex h-fit col-span-3'>
                                 <h1 className='mr-5 font-semibold'>Bid</h1>
                                 <div>
-                                    <input disabled={isUserLogin && (values.valueBid < dataCurItem.getProductAuctionById.Current_Price) ? false : true} onChange={handleChangeBid} value={values.valueBid} type='text' id='valueBid' name='valueBid' className='w-32 h-7 rounded-xl outline-none px-3 border-black border-2'/>
+                                    <input disabled={isUserLogin ? false : true} onChange={handleChangeBid} value={values.valueBid} type='text' id='valueBid' name='valueBid' className='w-32 h-7 rounded-xl outline-none px-3 border-black border-2'/>
                                 </div>
                             </div>
                             <button type='submit' disabled={isUserLogin && (values.valueBid < dataCurItem.getProductAuctionById.Current_Price) ? false : true} className={`col-span-2 font-semibold w-44 text-xl  py-3 rounded-full bg-background-signup ${(isUserLogin && (values.valueBid < dataCurItem.getProductAuctionById.Current_Price)) && `cursor-pointer hover:bg-textcolor transition-all`}`}>Bid now</button>

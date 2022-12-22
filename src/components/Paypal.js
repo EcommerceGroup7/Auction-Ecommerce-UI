@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate,useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { getLastestPayment } from '../graphql/queries';
+import { UserContext } from '../App';
 const Paypal = () => {
   const navigate = useNavigate()
   const param = useParams()
+  const {setCartValue} = useContext(UserContext)
     const success = ()=>toast.success('Thanh toán thành công)', {
           position: "top-center",
           autoClose: 5000,
@@ -74,6 +76,7 @@ const Paypal = () => {
               console.log('order', order)
           //   handleApprove(data.orderID)
               success()
+              setCartValue(0)
               navigate('/currency')
           }}
           onCancel={() => {}}

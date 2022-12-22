@@ -3,9 +3,11 @@ import {AiFillCamera,AiOutlineSearch,AiFillPlusCircle} from 'react-icons/ai'
 import { BiChevronDown } from "react-icons/bi";
 import Stack from '@mui/material/Stack';
 import { TextField,Button, Modal,Box,Fab ,MenuItem} from '@mui/material';
-import { useQuery } from '@apollo/client';
-import { getCatalogParent} from '../graphql/queries';
+import { useQuery,useMutation } from '@apollo/client';
+import { getCatalogParent,getUserById} from '../graphql/queries';
+import { createAddress } from '../graphql/mutation';
 import axios from 'axios'
+import { useFormik } from 'formik';
 
 const ModalEditUser = ({isVisible,onClose}) => {
     const style = {
@@ -20,6 +22,7 @@ const ModalEditUser = ({isVisible,onClose}) => {
       p: 4,
       borderRadius:2
     };
+    const [userid, setUserid] = useState('')
     const [avatarUser,setAvatarUser] = useState('https://i.pinimg.com/736x/01/7c/44/017c44c97a38c1c4999681e28c39271d.jpg')
     const [openModalChangePass, setOpenModalChangePass] = useState(false)
     const [openModalAddAddress, setOpenModalAddAddress] = useState(false)
@@ -29,9 +32,49 @@ const ModalEditUser = ({isVisible,onClose}) => {
     const [openTest, setOpenTest] = useState(false); 
 
     const [dataDistrict, setDataDistrict] = useState(null)
+    const [districtID, setDistrictID] = useState(0)
     const [district,setDistrict] = useState('')
+    const [createAddressUser, dataMutation] = useMutation(createAddress,{
+      refetchQueries:[
+        {
+          query:getUserById,
+          variables:{
+            User_ID:userid
+          }
+        }
+      ]
+    })
     const {loading,error,data} = useQuery(getCatalogParent)
+    const {loading:loadingUser, error:errorUser, data:dataUser} = useQuery(getUserById,{
 
+      variables:{
+        User_ID:userid
+      }
+
+    })
+    const {values:valuesAddress, error:errorAddress, handleChange:handleChangeAddress, handleSubmit:handleSubmitAddress} = useFormik({
+      initialValues:{
+        addressName:'',
+        receiverName:'',
+        phone:'',
+      },
+      onSubmit: async values=>{
+        try{
+          await createAddressUser({
+            variables:{
+              Address_Name:values.addressName,
+              Address_District:district,
+              Reciever_Name:values.receiverName,
+              Phone:values.phone,
+              District_ID:districtID,
+            }
+          })
+        } 
+        catch(err){
+            console.log(err);
+        }
+      }
+    })
     const getDataDistrict = async()=>{
         try {
             let res = await axios.get('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district',{
@@ -78,8 +121,27 @@ const ModalEditUser = ({isVisible,onClose}) => {
   };
   useEffect(()=>{
     getDataDistrict()
+    if(localStorage.getItem('token')===null){
+      setUserid('')
+    }
+    else{
+      setUserid(JSON.parse(localStorage.getItem('token')).userId.id)
+    }
+    if(!dataMutation.loading && dataMutation.called){
+      if(dataMutation.error){
+        console.log(dataMutation.error);
+      }
+      else{
+        valuesAddress.addressName=''
+        valuesAddress.phone=''
+        valuesAddress.receiverName=''
+        setDistrict('')
+        setDistrictID(0)
+        setOpenModalAddAddress(false)
+      }
+    }
     // getDataWard()
-  },[])
+  },[dataMutation.loading,dataMutation.called,dataMutation.error])
     if(!isVisible) return null
   return (
     <div className='fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-10'>
@@ -153,16 +215,16 @@ const ModalEditUser = ({isVisible,onClose}) => {
                                           <AiOutlineSearch size={20} className="text-gray-700"/>
                                           <input type="text" value={inputValueTest} placeholder='hellooo.....' className='placeholder:text-gray-700 p-2 outline-none bg-link' onChange={(e)=>setInputValueTest(e.target.value.toLowerCase())}/>
                                       </div>
-                                      {!loading && data.getListCatalog.map((item,index)=>(
-                                          <li key={item.Catalog_ID} className={`p-2 text-sm hover:bg-background-signup hover:text-white ${item?.Catalog_Name?.toLowerCase()===selectedTest?.toLowerCase() && "bg-background-signup text-black"} ${item?.Catalog_Name?.toLowerCase().startsWith(inputValueTest) ? 'block' : 'hidden'}`}
+                                      {!loadingUser && dataUser.getUserById.Address.map((item,index)=>(
+                                          <li key={item.Address_ID} className={`p-2 text-sm hover:bg-background-signup hover:text-white ${item?.Address_Name?.toLowerCase()===selectedTest?.toLowerCase() && "bg-background-signup text-black"} ${item?.Address_Name?.toLowerCase().startsWith(inputValueTest) ? 'block' : 'hidden'}`}
                                               onClick={()=>{
-                                                  if(item?.Catalog_Name?.toLowerCase()!==selectedTest.toLowerCase()){
-                                                      setSelectedTest(item?.Catalog_Name);
+                                                  if(item?.Address_Name?.toLowerCase()!==selectedTest.toLowerCase()){
+                                                      setSelectedTest(item?.Address_Name);
                                                       setOpenTest(false);
                                                       setInputValueTest("");
                                                   }
                                               }}
-                                          >{item.Catalog_Name}</li>
+                                          >{item.Address_Name}</li>
                                       ))}
                                       <div>
                                           <Fab sx={{backgroundColor:'#F2AF92',margin:"10px","&:hover":{backgroundColor:"transparent"}}} size='small' color="primary" aria-label="add">
@@ -178,13 +240,13 @@ const ModalEditUser = ({isVisible,onClose}) => {
                                             aria-describedby="modal-modal-description"
                                           >
                                               <Box sx={style} noValidate >
-                                                <form action="">
+                                                <form action="" onSubmit={handleSubmitAddress}>
                                                   <h1 className='text-center text-xl font-medium text-textcolor mb-2'>Add Address</h1>
                                                   <Stack className='mb-3'>
-                                                      <TextField id="outlined-basic" label="Full Name" variant="outlined"/>
+                                                      <TextField id="receiverName" name='receiverName' value={valuesAddress.receiverName} onChange={handleChangeAddress} label="Full Name" variant="outlined"/>
                                                   </Stack>
-                                                  <Stack className='mb-3'>
-                                                      <TextField id="outlined-basic" label="Phone number" variant="outlined"/>
+                                                  <Stack className='mb-3'> 
+                                                      <TextField id="phone" name='phone' value={valuesAddress.phone} label="Phone number" onChange={handleChangeAddress} variant="outlined"/>
                                                   </Stack>
                                                   <Stack className='mb-3 gap-3'>
                                                         <TextField
@@ -197,12 +259,12 @@ const ModalEditUser = ({isVisible,onClose}) => {
                                                           
                                                         >
                                                           {dataDistrict ? dataDistrict.data.map((itemDistrict,indexDistrict)=>(
-                                                            <MenuItem value={itemDistrict.DistrictName} key={itemDistrict.DistrictID}>{itemDistrict.DistrictName}</MenuItem>
+                                                            <MenuItem value={itemDistrict.DistrictName} onClick={()=>setDistrictID(itemDistrict.DistrictID)} key={itemDistrict.DistrictID}>{itemDistrict.DistrictName}</MenuItem>
                                                           )): <MenuItem disabled>Loading</MenuItem>}
                                                         </TextField>                                                                                                        
                                                   </Stack>
                                                   <Stack className='mb-3'>
-                                                      <TextField id="outlined-basic" label="Address" variant="outlined"/>
+                                                      <TextField id="addressName" name='addressName' value={valuesAddress.addressName} onChange={handleChangeAddress} label="Address" variant="outlined"/>
                                                   </Stack>
                                                   <div className='flex gap-2'>
                                                     <Button variant="contained" type='submit' style={{backgroundColor:"#F2AF92",height:"100%"}}>Add Address</Button>

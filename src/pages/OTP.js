@@ -45,6 +45,7 @@ const OTP = () => {
     }
   }
   useEffect(()=>{
+    document.title = "FreshAuc - OTP"
     if(!dataMutation.loading && dataMutation.called){
       // console.log(dataMutation.data.signup.userId.id);  
       if(dataMutation.error){

@@ -37,7 +37,8 @@ const login = gql`
             }
             accessToken,
             userInfo{
-                User_Name
+                User_Name,
+                isAdmin
             }
         }
     }
@@ -123,8 +124,12 @@ const createUserBid = gql`
             Product_Auction_ID:$Product_Auction_ID,
             Price:$Price
         }){
-            User_ID,
-            Product_Auction_ID,
+            User{
+                User_ID
+            },
+            Product_Auction{
+                Product_Auction_ID
+            },
             Price,
             Time
         }
@@ -168,4 +173,15 @@ const createPayment = gql`
         }
     }
 `
-export {addUser, activeOTP,login, resendOtp, forgotPassword, ResetPassword,createProductAuction, createProduct, rechargeMoney, createUserBid,orderProductAuction,createAddress,createPayment}
+const createAuctionField = gql`
+    mutation createAuctionField($Start_Time:DateTime!,$End_Time:DateTime!, $Discount_Circle:Int!){
+        createAuctionField(createAuctionFieldInput:{
+            Start_Time:$Start_Time,
+            End_Time:$End_Time,
+            Discount_Circle:$Discount_Circle,
+        }){
+            Auction_Field_ID
+        }
+    }
+`
+export {addUser, activeOTP,login, resendOtp, forgotPassword, ResetPassword,createProductAuction, createProduct, rechargeMoney, createUserBid,orderProductAuction,createAddress,createPayment,createAuctionField}

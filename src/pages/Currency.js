@@ -1,9 +1,12 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import CurrencyItem from '../components/CurrencyItem'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
 const Currency = () => {
+  useEffect(()=>{
+    document.title = "FreshAuc - Wallet"
+  },[])
   return (
     <>
         <Navbar/>

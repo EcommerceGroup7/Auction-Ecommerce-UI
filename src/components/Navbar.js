@@ -3,11 +3,19 @@ import {BiSearchAlt2,BiUser} from 'react-icons/bi'
 import {AiOutlineShoppingCart} from 'react-icons/ai'
 import {Link, useNavigate} from 'react-router-dom'
 import { UserContext } from '../App'
+import { useQuery } from '@apollo/client'
+import { getUserOrder } from '../graphql/queries'
 const Navbar = () => {
+  const [userid, setUserid] = useState('')
   const [checkUser, setCheckUser] = useState(false)
   const [openModalUser, setOpenModalUser] = useState(false)
   const [userName,setUserName] = useState('')
-  const {searchValue,setSearchValue,cartValue} = useContext(UserContext)
+  const {searchValue,setSearchValue,cartValue,setCartValue} = useContext(UserContext)
+  const {loading:loadingUserOrder, error:errorUserOrder, data:dataUserOrder, refetch} = useQuery(getUserOrder,{
+    variables:{
+        User_ID:userid
+    }
+  })
   const navigate = useNavigate()
   const onSearchSubmit =  (e) =>{
     e.preventDefault()
@@ -24,12 +32,15 @@ const Navbar = () => {
     {
       setCheckUser(false)
       setUserName('')
+      setUserid('')
     }
     else{
       setCheckUser(true)
       setUserName(JSON.parse(localStorage.getItem('token')).userInfo.User_Name)
+      setUserid(JSON.parse(localStorage.getItem('token')).userId.id)
     }
-  }, [])
+    setCartValue(!loadingUserOrder && dataUserOrder.getUserOrder.length)
+  }, [loadingUserOrder,dataUserOrder])
   const openModal = ()=>{
     setOpenModalUser(!openModalUser)
   }
@@ -82,7 +93,7 @@ const Navbar = () => {
             {checkUser ? (
               <>
                   <li className="mt-2 sm:mt-0">
-                    <Link className='relative cursor-pointer'>
+                    <Link to='/cart' className='relative cursor-pointer'>
                       <AiOutlineShoppingCart className='w-7 h-7'/>
                       <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-white flex justify-center items-center'>
                         <span className=''>{cartValue}</span>

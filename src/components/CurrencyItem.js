@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 const CurrencyItem = () => {
     const [showMoney, setShowMoney] = useState(false)
     const [userInfo, setUserInfo]=useState('')
-    const {loading, error, data} = useQuery(getCurrentByUser,{
+    const {loading, error, data,refetch} = useQuery(getCurrentByUser,{
         variables:{
             User_ID:userInfo
         }
@@ -25,9 +25,12 @@ const CurrencyItem = () => {
         else{
             setUserInfo(JSON.parse(localStorage.getItem('token')).userId.id)
         }
+        refetch({
+            User_ID:userInfo
+        })
         console.log(data);
         console.log((dataLastCur));
-    },[data,dataLastCur])
+    },[data,dataLastCur,refetch,userInfo])
   return (
     <React.Fragment>
         
@@ -43,7 +46,6 @@ const CurrencyItem = () => {
                 </div>
                 <div className='flex justify-evenly'>
                     <Link to='/wallet/recharge' className='px-6 py-2 bg-background-signup rounded-full'>Recharge</Link>
-                    <button className='px-6 py-2 bg-background-signup rounded-full'>Withdraw money</button>
                 </div>
             </div>
         </div>

@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import ProductList from '../components/ProductList'
 
 const ProductMangament = () => {
+  useEffect(()=>{
+    document.title = 'FreshAuc - Product Management'
+  },[])
   return (
     <>
         <Navbar/>

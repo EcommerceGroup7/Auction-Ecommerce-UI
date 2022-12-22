@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Bid from '../components/Bid'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
 const CurrentBid = () => {
+  useEffect(()=>{
+    document.title = "FreshAuc - CurrentBid"
+  },[])
   return (
     <>
         <Navbar/>

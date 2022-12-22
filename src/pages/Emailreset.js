@@ -38,6 +38,7 @@ const Emailreset = () => {
     }
   })  
   useEffect(() => {
+    document.title = "FreshAuc - Email reset"
     if (!dataMutation.loading && dataMutation.called) {
       if (dataMutation.error) {
         console.log(dataMutation.error.message)

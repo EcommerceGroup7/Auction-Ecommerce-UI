@@ -32,6 +32,7 @@ const Resetpassword = () => {
       }
     })
     useEffect(()=>{
+      document.title = "FreshAuc - Resetpassword"
       if(!dataMutationReset.loading && dataMutationReset.called){
           if(dataMutationReset.error){
               // console.log(dataMutation.error.message);

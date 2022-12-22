@@ -51,6 +51,7 @@ const Signup = () => {
     })
 
     useEffect(()=>{
+        document.title = "FreshAuc - Signup"
         if(!dataMutation.loading && dataMutation.called){
             if(dataMutation.error){
                 // console.log(dataMutation.error.message);

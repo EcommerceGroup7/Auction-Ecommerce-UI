@@ -26,11 +26,11 @@ import ProductMangament from './pages/ProductMangament';
 import ProductItemPage from './pages/ProductItemPage';
 import AdminHome from './admin/AdminHome';
 import AdminBid from './admin/AdminBid';
-import AdminOrder from './admin/AdminOrder';
 import AdminProduct from './admin/AdminProduct';
 import AdminCurrency from './admin/AdminCurrency';
 import CheckoutPage from './pages/CheckoutPage';
 import WalletPage from './pages/WalletPage';
+import ShoppingCarts from './pages/ShoppingCarts';
 
 export const UserContext = createContext()
 function App() {
@@ -41,11 +41,10 @@ function App() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Router>
             <Routes>
-              {/* <Route path='/dashboard' element={<AdminHome/>}/>
-              <Route path='/order' element={<AdminOrder/>}/>
+              <Route path='/dashboard' element={<AdminHome/>}/>
               <Route path='/productmana' element={<AdminProduct/>}/>
               <Route path='/editBid' element={<AdminBid/>}/>
-              <Route path='/current' element={<AdminCurrency/>}/> */}
+              <Route path='/current' element={<AdminCurrency/>}/>
               <Route path='/' element={<Home/>}/>
               <Route path='/signup' element={<Signup/>}/>
               <Route path='/otp/' element={<OTP/>}/>
@@ -65,6 +64,7 @@ function App() {
               <Route path='/profile' element={<Profile/>}/>
               <Route path='/checkout' element={<CheckoutPage/>}/>
               <Route path='/currentBid' element={<CurrentBid/>}/>
+              <Route path='/cart' element={<ShoppingCarts />}/>
             </Routes>
           </Router>
       </LocalizationProvider>

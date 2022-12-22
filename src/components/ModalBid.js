@@ -1,21 +1,32 @@
 import React,{useEffect, useState} from 'react'
 import { useQuery,useMutation } from '@apollo/client'
-import { getAvailableAuctionField } from '../graphql/queries'
+import { getAvailableAuctionField, getProductByUser} from '../graphql/queries'
 import { createProductAuction } from '../graphql/mutation'
 import { useFormik } from 'formik'
 import * as yup from "yup"
+import { queries } from '@testing-library/react'
 const ModalBid = ({isVisible, onClose,dataShowModal}) => {
     const createProductAuctionValidation = yup.object().shape({
         weight:yup.number().min(0,'Min value 0').required('Must have value'),
         starting_Price:yup.number().required('Must have a price'),
         discount_Rate:yup.number().required("Must have a discount Rate")
     })
+    const [userid,setUserid] = useState('')
     const [timer, setTimer] = useState('')
     const [auctionField, setAuctionField] = useState('')
     const [errorMutation, setErrorMutation] = useState(null)
     const [successMutation, setSuccessMutation] = useState(null)
     const {loading, error, data} = useQuery(getAvailableAuctionField)
-    const [createProductAuctionBid,dataMutation] = useMutation(createProductAuction)
+    const [createProductAuctionBid,dataMutation] = useMutation(createProductAuction,{
+        refetchQueries:[
+            {
+                query:getProductByUser,
+                variables:{
+                    User_ID:userid
+                }
+            }
+        ]
+    })
     const {values,errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({
         initialValues:{
             weight:'',
@@ -46,6 +57,12 @@ const ModalBid = ({isVisible, onClose,dataShowModal}) => {
         setAuctionField(auctionID)
     }
     useEffect(()=>{
+        if(localStorage.getItem('token') === null){
+            setUserid('')
+        }
+        else{
+            setUserid(JSON.parse(localStorage.getItem('token')).userId.id)
+        }
         if(!dataMutation.loading && dataMutation.called){
             if(dataMutation.error){
                 console.log(dataMutation.error);

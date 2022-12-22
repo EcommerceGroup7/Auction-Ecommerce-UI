@@ -62,24 +62,6 @@ const AdminNavbar = () => {
           className="peer-checked:block hidden pl-2 py-6 sm:block sm:py-0"
         >
           <ul className="flex flex-col gap-y-4 sm:flex-row sm:gap-x-8 items-center">
-            <li className="">
-              <form className='flex items-center px-4 p-2 bg-white rounded-full' onSubmit={onSearchSubmit}>
-                <input type="text" className='outline-none w-24' placeholder='Search...' 
-                // onChange={(e)=>setSearchValue(e.target.value)}
-                />
-                <button type="submit"><BiSearchAlt2 className='w-6 h-6'/></button>
-              </form>
-            </li>
-           
-              
-            <li className="mt-2 sm:mt-0">
-                <Link className='relative cursor-pointer'>
-                    <IoIosNotifications className='w-7 h-7'/>
-                    <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-white flex justify-center items-center'>
-                    <span className=''>2</span>
-                    </div>
-                </Link>
-            </li>
             <li className="mt-2 sm:mt-0">
                 <div className='sm:relative cursor-pointer '>
                     <BiUser className='w-full h-7 text-center' onClick={openModal}/>
@@ -89,9 +71,6 @@ const AdminNavbar = () => {
                         <ul className='w-40 bg-textcolor p-4 rounded-xl'>
                             <li className='text-lg font-semibold p-1 rounded-lg'>
                                 <h1>{userName}</h1>
-                            </li>
-                            <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link>Settings Profile</Link>
                             </li>
                             <li className='hover:bg-link p-1 rounded-lg' onClick={isLogOut}>
                                 <span>Logout</span>

@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import Wallet from '../components/Wallet'
 const WalletPage = () => {
+  
   return (
-    
     <>
         <Navbar/>
         <div className='lg:container mx-auto p-3'>

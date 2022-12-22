@@ -33,6 +33,7 @@ const ListItem = () => {
             // console.log(JSON.parse(localStorage.getItem('token')).userId.id)
             setUserId(JSON.parse(localStorage.getItem('token')).userId.id)
         }
+        refetch()
         const minInterval = setInterval(()=>{
             if(param.cate === 'all'){
                 refetch()
@@ -47,7 +48,7 @@ const ListItem = () => {
                     Product_Name:searchValue,
                 })
             }
-        },(!loadingMinTime && dataMinTime.getMinTimeToDiscount*60*1000 + 1500))
+        },(!loadingMinTime && dataMinTime.getMinTimeToDiscount*60*1000 + 1000))
         return ()=>clearInterval(minInterval)
     },[dataItem,dataAll,dataMinTime,loadingMinTime,searchValue,param.cate,refetchProductCatalog,refetchSearch,refetch])
   return (
@@ -59,7 +60,7 @@ const ListItem = () => {
             <React.Fragment>
                 <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 mt-4'>
                     {!loadingAll && dataAll.getAuctioningProduct.map((itemAll,indexAll)=>(
-                        <Link className='bg-link p-3 rounded-lg' key={itemAll.Product_Auction_ID} to={userId===itemAll.User_ID.User_ID ? `/product/${itemAll.Product_Auction_ID}` :`/item/${itemAll.Product_Auction_ID}`}>
+                        <Link className='bg-link p-3 rounded-lg' key={itemAll.Product_Auction_ID} to={userId===itemAll.User_ID.User_ID ? `/product/${itemAll.Product_ID.Product_ID}` :`/item/${itemAll.Product_Auction_ID}`}>
                             <div className='grid grid-cols-2 grid-rows-2 gap-1'>
                                 {itemAll.Product_ID.Product_Image.slice(0,2).map((itemImg,indexItemImg)=>(
                                     <div className='row-span-2' key={itemImg.Product_Image_ID}>

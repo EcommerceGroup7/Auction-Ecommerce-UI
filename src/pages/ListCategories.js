@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from '../components/Footer'
 import ListItem from '../components/ListItem'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/SideBar'
 const ListCategories = () => {
+  useEffect(()=>{
+    document.title = "FreshAuc - Product"
+  },[])
   return (
     <>
       <Navbar/>

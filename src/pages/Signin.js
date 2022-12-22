@@ -45,13 +45,20 @@ const Signin = () => {
   })
 
   useEffect(() => {
+    document.title = "FreshAuc - Signin"
     if (!dataMutation.loading && dataMutation.called) {
       if (dataMutation.error) {
         console.log(dataMutation.error.message)
       } else {
         localStorage.setItem('token', JSON.stringify(dataMutation.data.login))
         console.log(dataMutation.data.login.userId.id)
-        navigate(`/`)
+        if(dataMutation.data.login.userInfo.isAdmin){
+
+          navigate(`/dashboard`)
+        }
+        else{
+          navigate('/')
+        }
       }
     }
   }, [

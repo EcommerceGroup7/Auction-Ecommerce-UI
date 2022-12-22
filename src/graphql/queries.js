@@ -323,8 +323,12 @@ const getCurrentBid = gql`
             Product_Auction_ID:$Product_Auction_ID,
             User_ID:$User_ID
         }){
-            User_ID,
-            Product_Auction_ID,
+            User{
+                User_ID
+            },
+            Product_Auction{
+                Product_Auction_ID
+            },
             Price,
             Time
         }
@@ -347,14 +351,6 @@ const getUserById = gql`
                 Address_District,
                 District_ID
             },
-            Default_Address_ID{
-                Address_ID
-                Reciever_Name,
-                Phone,
-                Address_Name,
-                Address_District,
-                District_ID
-            }
             Shop_Name,
             User_Image_Url,
         }
@@ -373,6 +369,7 @@ const getUserOrder = gql`
                         Product_Image_Url
                     }
                 }
+                Starting_Price,
                 Weight,
             },
             Address_ID{
@@ -407,6 +404,77 @@ const getUserBidding = gql`
         }
     }
 `
+const userOrderTotal = gql`
+    query userOrderTotal($User_ID:String!){
+        userOrderTotal(User_ID:$User_ID){
+            total,
+            weight,
+            Address_ID{
+                District_ID
+            }
+        }
+    }
+`
+const getCurrencyLog = gql`
+    query getCurrencyLog{
+        getCurrencyLog{
+            Currency_Log_ID,
+            Currency_Log_Value,
+            Total_Amount,
+            Time,
+            Currency{
+                User_ID{
+                    User_Name
+                }
+            }
+        }
+    }
+`
+
+const getAdminProductCount = gql`
+    query getAdminProductCount{
+        getAdminProductCount{
+            totalProduct,
+            ordered,
+            sold,
+            selling,
+        }
+    }
+`
+const getAdminProductInfo = gql`
+    query getAdminProductInfo{
+        getAdminProductInfo{
+            Product_ID{
+      Product_ID,
+      Product_Name,
+    },
+    User_ID{
+        Shop_Name
+      }
+    Current_Price,
+    status
+        }
+    }
+`
+const getFieldTotalProduct = gql`
+    query getFieldTotalProduct{
+        getFieldTotalProduct{
+            Auction_Field_ID,
+            totalProduct
+        }
+    }
+`
+const getAllAuctionField = gql`
+    query getAllAuctionField{
+        getAllAuctionField{
+            Auction_Field_ID,
+            Start_Time,
+            End_Time,
+            Discount_Circle,
+            isOperation
+        }
+    }
+`
 export {getSingleEmailUser, 
         getPopulateCatalog, 
         getListCategoryForSidebar,
@@ -432,5 +500,11 @@ export {getSingleEmailUser,
         getUserById,
         getUserOrder,
         getLastestPayment,
-        getUserBidding
+        getUserBidding,
+        userOrderTotal,
+        getCurrencyLog,
+        getAdminProductCount,
+        getAdminProductInfo,
+        getFieldTotalProduct,
+        getAllAuctionField,
 }

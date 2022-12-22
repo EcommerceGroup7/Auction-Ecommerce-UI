@@ -6,6 +6,9 @@ import Recommends from '../components/Recommends'
 import Silder from '../components/Silder'
 import 'react-toastify/dist/ReactToastify.css';
 const Home = () => {
+  useEffect(()=>{
+    document.title = "FreshAuc - Home"
+  },[])
   return (
     <>
       <Navbar/>

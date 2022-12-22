@@ -186,10 +186,8 @@ const TableWeight = () => {
             </Paper>
 
             <div>
-                <Button onClick={handleOpenWeight}> 
-                <Fab sx={{backgroundColor:'#F2AF92',margin:"10px","&:hover":{backgroundColor:"#F2AF92"}}} size='small' color="primary" aria-label="add">
-                    <AiFillPlusCircle size={25}/> 
-                </Fab>
+                <Button onClick={handleOpenWeight} style={{color:"#FABFA5"}}> 
+                
                 Add Weight
                 </Button>
                 <Modal

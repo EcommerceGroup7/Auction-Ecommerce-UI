@@ -179,10 +179,7 @@ const TableOrder = () => {
             </Paper>
 
             <div>
-            <Button onClick={handleOpenAddress}> 
-              <Fab sx={{backgroundColor:'#F2AF92',margin:"10px","&:hover":{backgroundColor:"#F2AF92"}}} size='small' color="primary" aria-label="add">
-                <AiFillPlusCircle size={25}/> 
-              </Fab>
+            <Button onClick={handleOpenAddress} style={{color:"#FABFA5"}}> 
               Add Address
             </Button>
             <Modal

@@ -21,6 +21,7 @@ const Personal = () => {
   const test1 = "test1"
   const test2 = "test2"
   const test3 = "test3"
+  
   const handleDataModal = (data) =>{
     setShowModalDetail(true)
     setDataModal(data)
@@ -52,9 +53,9 @@ const Personal = () => {
                   <h1 className='text-lg text-textcolor font-medium'>First Name: {dataUser.getUserById.User_First_Name}</h1>
                   <h1 className='text-lg text-textcolor font-medium'>Last Name: {dataUser.getUserById.User_Last_Name}</h1>
                   <h1 className='text-lg text-textcolor font-medium'>Email: {dataUser.getUserById.Email}</h1>
-                  <h1 className='text-lg text-textcolor font-medium'>Phone: {dataUser.getUserById?.Default_Address_ID?.Phone}</h1>
+                  <h1 className='text-lg text-textcolor font-medium'>Phone: {dataUser.getUserById?.Address.length > 0 && dataUser.getUserById?.Address[0]?.Phone}</h1>
                   <h1 className='text-lg text-textcolor font-medium'>Shop Name: {dataUser.getUserById?.Shop_Name}</h1>
-                  <h1 className='text-lg text-textcolor font-medium'>Address: {dataUser.getUserById?.Default_Address_ID?.Address_Name}, {dataUser.getUserById?.Default_Address_ID?.Address_District}</h1>
+                  <h1 className='text-lg text-textcolor font-medium'>Address: {dataUser.getUserById?.Address.length > 0 && dataUser.getUserById?.Address[0]?.Address_Name}, {dataUser.getUserById?.Address.length > 0 &&dataUser.getUserById?.Address[0]?.Address_District}</h1>
                 </div>
               </div>
           </div>

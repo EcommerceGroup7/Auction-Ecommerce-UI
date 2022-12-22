@@ -11,7 +11,7 @@ import { useNavigate,useParams } from 'react-router-dom';
 const Wallet = () => {
     const navigate = useNavigate()
     const param = useParams()
-      const success = ()=>toast.success('Thanh toán thành công)', {
+      const success = ()=> toast.success('Thanh toán thành công)', {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,

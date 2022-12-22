@@ -9,7 +9,7 @@ import { TextField,MenuItem,Stack } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import { useQuery, useMutation } from '@apollo/client';
-import { getUserById, getUserOrder, getCurrentByUser } from '../graphql/queries';
+import { getUserById, getUserOrder, getCurrentByUser,userOrderTotal } from '../graphql/queries';
 import { createAddress,createPayment } from '../graphql/mutation';
 import { useFormik } from 'formik';
 import { addAddress } from '../schema/schemaindex';
@@ -71,6 +71,11 @@ const Checkout = () => {
             User_ID:userId
         }
     })
+    const {loading:loadingOrderTotal, error:errorOrderTotal, data:dataOrderTotal} = useQuery(userOrderTotal,{
+        variables:{
+            User_ID:userId
+        }
+    })
     const [createAdd, dataMutationAddress] = useMutation(createAddress,{
         refetchQueries:[
             {
@@ -117,10 +122,11 @@ const Checkout = () => {
         },
         onSubmit: async ()=>{
             try{
+
                 await createOrderPayment({
                     variables:{
                         Order_ID:arrOrderId,
-                        total:((totalShip / 23730)+totalItem),
+                        total:((totalShip / 23730) + totalItem) ,
                         method:paymentMethods
                     }
                 })
@@ -136,12 +142,13 @@ const Checkout = () => {
     const handleChangeAddress = (e)=>{
         console.log(e.target.value);
     }
-    const handleClickAddress = (address,district,receiver,phone,id)=>{
+    const handleClickAddress = (address,district,receiver,phone,id,districtId)=>{
         setAddressNameChange(address)
         setDistrictChange(district)
         setReceiverNameChange(receiver)
         setPhoneChange(phone)
         setAddressId(id)
+        setDistrictIdsChange(districtId)
     }
     const handleSubmitAddress = (e)=>{
         e.preventDefault()
@@ -163,13 +170,13 @@ const Checkout = () => {
             console.log(error.message);
         }
     }
-    const getShipFee = async(districtid,weight,totalPrice)=>{
+    const getShipFee = async()=>{
         let data = JSON.stringify({
             "from_district_id": 3695,
             "service_id": 53320,
-            "to_district_id": districtid,
-            "weight": weight*1000,
-            "insurance_value": totalPrice * 23730
+            "to_district_id": districtIdsChange === 0 ? !loadingOrderTotal && dataOrderTotal.userOrderTotal.Address_ID.District_ID : districtIdsChange,
+            "weight": !loadingOrderTotal && dataOrderTotal.userOrderTotal.weight*1000,
+            "insurance_value": !loadingOrderTotal &&  Math.floor(dataOrderTotal.userOrderTotal.total * 23730)
           });
           
           var config = {
@@ -202,17 +209,24 @@ const Checkout = () => {
             setUserId(JSON.parse(localStorage.getItem('token')).userId.id)
         }
         getDataDistrict()
+        if(!loadingOrderTotal){
+            getShipFee()
+        }
         if(!loadingUser){
-            setAddressId(dataUser.getUserById.Default_Address_ID.Address_ID)
-            setDistrictIdsChange(dataUser.getUserById.Default_Address_ID.District_ID)
+            setAddressId(dataUser.getUserById?.Address[0]?.Address_ID)
+            // setDistrictIdsChange(dataUser.getUserById.Default_Address_ID.District_ID)
         }
         if(!loadingUserOrder){
-            dataUserOrder.getUserOrder.map(async(item)=>{
-                 await getShipFee(item.Address_ID.District_ID, item.Product_Auction_ID.Weight,Math.floor(item.Total_Price))
-                 setTotalItem(prev=>prev+item.Total_Price)
-                 setTotalWeight(prev=>prev + item.Product_Auction_ID.Weight)
-                 setArrOrderId([...arrOrderId,item.Order_ID])
-            })
+            let count = 0
+            let arr = []
+            dataUserOrder.getUserOrder.map((item)=>{
+                //  await getShipFee(item.Address_ID.District_ID, item.Product_Auction_ID.Weight,Math.floor(item.Total_Price))
+                    console.log(item);
+                    count = count + item.Total_Price - (item.Product_Auction_ID.Starting_Price * 0.05)
+                    arr.push(item.Order_ID)
+                })
+            setArrOrderId(arr)
+            setTotalItem(count)
         }
         if(!dataMutationOrder.loading && dataMutationOrder.called){
             if(dataMutationOrder.error){
@@ -224,13 +238,15 @@ const Checkout = () => {
                     navigate(`/payment/${dataMutationOrder.data.createPayment.Payment_ID}`)
                 }
                 else{
-                    navigate('/')
+                    // console.log(totalItem);
+                    navigate('/currency')
                 }
             }
         }
-      },[loadingUserOrder,dataUserOrder,loadingUser,dataUser,dataMutationOrder.loading,dataMutationOrder.called,dataMutationOrder.error])
-      console.log(addressId);
-      
+      },[districtIdsChange,loadingOrderTotal,loadingUserOrder,dataUserOrder,loadingUser,dataUser,dataMutationOrder.loading,dataMutationOrder.called,dataMutationOrder.error,navigate])
+    //   console.log(addressId);
+    //   console.log(totalItem);
+    //   console.log(arrOrderId);
   return (
     <div className='mt-20 mb-10'>
         <form action="" onSubmit={handleSubmitPayment}>
@@ -240,9 +256,9 @@ const Checkout = () => {
                 <div className='mb-4 ml-6 flex items-center justify-between'>
                     {!loadingUser && (
                         <div>
-                            <h1 className='text-base'><span className='text-textcolor'>Name: </span>{receiverNameChange==='' ?  dataUser.getUserById?.Default_Address_ID?.Reciever_Name : receiverNameChange} | {phoneChange === '' ? dataUser.getUserById?.Default_Address_ID?.Phone : phoneChange}</h1>
-                            <h1 className='text-base'><span className='text-textcolor'>Address: </span>{addressNameChange === '' ? dataUser.getUserById?.Default_Address_ID?.Address_Name : addressNameChange}</h1>
-                            <h1 className='text-base'><span className='text-textcolor'>District: </span>{districtChange === '' ? dataUser.getUserById?.Default_Address_ID?.Address_District : districtChange}</h1>
+                            <h1 className='text-base'><span className='text-textcolor'>Name: </span>{receiverNameChange==='' ?  dataUser.getUserById?.Address[0]?.Reciever_Name : receiverNameChange} | {phoneChange === '' ? dataUser.getUserById?.Address[0]?.Phone : phoneChange}</h1>
+                            <h1 className='text-base'><span className='text-textcolor'>Address: </span>{addressNameChange === '' ? dataUser.getUserById?.Address[0]?.Address_Name : addressNameChange}</h1>
+                            <h1 className='text-base'><span className='text-textcolor'>District: </span>{districtChange === '' ? dataUser.getUserById?.Address[0]?.Address_District : districtChange}</h1>
                         </div>
                     )}
                     <div>
@@ -259,7 +275,7 @@ const Checkout = () => {
                                     <div className='mb-2'>
                                         {!loadingUser && dataUser.getUserById.Address.map((itemAddress,indexAddress)=>(
                                             <div key={itemAddress.Address_ID} className='flex mt-3'>
-                                                <input className='form-check-input mt-2 appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-background-signup checked:border-textcolor focus:outline-none transition duration-200 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer' type="radio" onClick={()=>handleClickAddress(itemAddress.Address_Name,itemAddress.Address_District,itemAddress.Reciever_Name,itemAddress.Phone,itemAddress.Address_ID)} onChange={handleChangeAddress} id={itemAddress.Address_ID} name='address' value={itemAddress.Address_ID} checked={addressId === itemAddress.Address_ID}/>
+                                                <input className='form-check-input mt-2 appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-background-signup checked:border-textcolor focus:outline-none transition duration-200 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer' type="radio" onClick={()=>handleClickAddress(itemAddress.Address_Name,itemAddress.Address_District,itemAddress.Reciever_Name,itemAddress.Phone,itemAddress.Address_ID,itemAddress.District_ID)} onChange={handleChangeAddress} id={itemAddress.Address_ID} name='address' value={itemAddress.Address_ID} checked={addressId === itemAddress.Address_ID}/>
                                                 <label className='form-check-label inline-block text-gray-800 flex-1' htmlFor={itemAddress.Address_ID}>
                                                     <div>
                                                         <h1 className='font-medium'>{itemAddress.Reciever_Name} | <span className='text-gray-400'>{itemAddress.Phone}</span></h1>
@@ -343,7 +359,7 @@ const Checkout = () => {
                 <hr />
                 <div className='flex justify-between my-4'>
                     <h1 className='font-semibold text-2xl text-textcolor mb-2'>Order Total</h1>
-                    <p className='font-medium text-lg'>${totalItem.toFixed(2)}</p>
+                    <p className='font-medium text-lg'>${totalItem}</p>
                 </div>
                 <hr />
                 <div className='flex justify-between my-4'>
@@ -365,7 +381,7 @@ const Checkout = () => {
                     <div className='ml-6'>
                         <div className='flex justify-between my-4'>
                             <h1 className='font-semibold text-lg text-textcolor mb-2'>Merchandise SubTotal</h1>
-                            <p className='font-medium text-lg'>${totalItem.toFixed(2)}</p>
+                            <p className='font-medium text-lg'>${totalItem}</p>
                         </div>
                         <div className='flex justify-between my-4'>
                             <h1 className='font-semibold text-lg text-textcolor mb-2'>Shipping Total</h1>
@@ -373,12 +389,12 @@ const Checkout = () => {
                         </div>
                         <div className='flex justify-between my-4'>
                             <h1 className='font-semibold text-lg  mb-2'>Payment Total</h1>
-                            <p className='font-medium text-lg'>${((totalShip / 23730)+totalItem).toFixed(2)}</p>
+                            <p className='font-medium text-lg'>${!loadingOrderTotal && ((totalShip / 23730)+totalItem).toFixed(2)}</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <Button type='submit' disabled={((paymentMethods === 'wallet' || paymentMethods === '') && (!loadingCurrency && dataCurrency.getCurrentByUser.Total_Money < ((totalShip / 23730)+totalItem).toFixed(2))) ? true : false} style={{backgroundColor:"#F9D0BE", color:"#ffff", margin:"0 auto", display:"block", cursor:'pointer'}}>Checkout</Button>
+            <Button type='submit' disabled={((paymentMethods === 'wallet' && (!loadingCurrency && dataCurrency.getCurrentByUser.Total_Money < (!loadingOrderTotal && ((totalShip / 23730)+dataOrderTotal.userOrderTotal.total).toFixed(2)))) || paymentMethods === '') ? true : false} style={{backgroundColor:"#F9D0BE", color:"#ffff", margin:"0 auto", display:"block", cursor:'pointer'}}>Checkout</Button>
         </form>
     </div>
   )
