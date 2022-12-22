@@ -475,6 +475,48 @@ const getAllAuctionField = gql`
         }
     }
 `
+const getUserOrderHistory = gql`
+    query getUserOrderHistory($User_ID:String!){
+        getUserOrderHistory(User_ID:$User_ID){
+            Order_ID,
+            Status,
+            Product_Auction_ID{
+            Product_ID{
+                Product_Name,
+                Product_Image{
+                Product_Image_ID,
+                Product_Image_Url
+                }
+            }
+            }
+        }
+    }
+`
+const getAllUser = gql`
+    query getAllUser{
+        getAllUser{
+            User_ID,
+            User_Name,
+            Email,
+            Shop_Name,
+            isActive
+        }
+    }
+`
+const adminDashBoardAuction = gql`
+    query adminDashBoardAuction{
+        adminDashBoardAuction{
+            Auction_Field_ID
+        }
+    }
+`
+const adminDashboardSales = gql`
+    query adminDashboardSales{
+        adminDashboardSales{
+            Product_Auction_ID
+        }
+    }
+`
 export {getSingleEmailUser, 
         getPopulateCatalog, 
         getListCategoryForSidebar,
@@ -507,4 +549,8 @@ export {getSingleEmailUser,
         getAdminProductInfo,
         getFieldTotalProduct,
         getAllAuctionField,
+        getUserOrderHistory,
+        getAllUser,
+        adminDashBoardAuction,
+        adminDashboardSales,
 }

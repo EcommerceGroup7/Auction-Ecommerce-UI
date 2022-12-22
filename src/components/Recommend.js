@@ -1,17 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import crab from '../imgs/crab.jpg'
-const Recommend = () => {
+const Recommend = ({img,price}) => {
   return (
     <div className='flex flex-col items-center w-max'>
-      <Link>
+      <div >
         <div className='w-36 h-36 rounded-full overflow-hidden mb-3'>
-          <img src={crab} alt=""  className='w-full h-full object-cover '/>
+          <img src={img} alt=""  className='w-full h-full object-cover '/>
         </div>
-      </Link>
-      <Link className='font-semibold'>$521.5</Link>
+      </div>
+      <div className='font-semibold'>${price}</div>
     </div>
   )
 }
-
 export default Recommend

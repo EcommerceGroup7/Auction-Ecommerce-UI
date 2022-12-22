@@ -7,7 +7,10 @@ import { Autoplay, Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { useQuery } from '@apollo/client';
+import {getAuctioningProduct} from '../graphql/queries'
 const Recommends = () => {
+  const {loading, error,data} = useQuery(getAuctioningProduct)
   return (
     <div className='mb-10'>
         <div className='flex items-baseline h-max'>
@@ -45,13 +48,15 @@ const Recommends = () => {
           }}
         modules={[Autoplay, Navigation]}
         className="mySwiper ">
-            <SwiperSlide>
+          {!loading && data.getAuctioningProduct.slice(0,6).map((item,index)=>(
+              <SwiperSlide key={item.Product_Auction_ID}>
+                  <Recommend img={item.Product_ID.Product_Image[0].Product_Image_Url} price={item.Current_Price}/>
+              </SwiperSlide>
+          ))}
+            {/* <SwiperSlide>
                 <Recommend/>
             </SwiperSlide>
             <SwiperSlide>
-                <Recommend/>
-            </SwiperSlide>
-            <SwiperSlide>
                 <Recommend/> 
             </SwiperSlide>
             <SwiperSlide>
@@ -62,7 +67,7 @@ const Recommends = () => {
             </SwiperSlide>
             <SwiperSlide>
                 <Recommend/> 
-            </SwiperSlide>
+            </SwiperSlide> */}
         </Swiper>
     </div>
   )

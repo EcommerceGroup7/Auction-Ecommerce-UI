@@ -31,6 +31,7 @@ import AdminCurrency from './admin/AdminCurrency';
 import CheckoutPage from './pages/CheckoutPage';
 import WalletPage from './pages/WalletPage';
 import ShoppingCarts from './pages/ShoppingCarts';
+import OrderHistory from './pages/OrderHistory';
 
 export const UserContext = createContext()
 function App() {
@@ -65,6 +66,7 @@ function App() {
               <Route path='/checkout' element={<CheckoutPage/>}/>
               <Route path='/currentBid' element={<CurrentBid/>}/>
               <Route path='/cart' element={<ShoppingCarts />}/>
+              <Route path='/historyOrder' element={<OrderHistory/>}/>
             </Routes>
           </Router>
       </LocalizationProvider>

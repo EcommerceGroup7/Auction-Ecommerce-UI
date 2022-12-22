@@ -14,13 +14,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { useQuery } from '@apollo/client'
+import { getAllUser,adminDashBoardAuction, adminDashboardSales } from '../graphql/queries'
 ChartJS.register(ArcElement, Tooltip, Legend);
 const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    labels: ['Fruit', 'Meat', 'Sea Food', 'Vegatables'],
     datasets: [
       {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: 'Category Order',
+        data: [12, 19, 3, 5],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -42,58 +44,59 @@ const data = {
     ],
   };
 
-
+  const datass = {
+    labels: ['Quận 10', 'Quận Thủ Đức', 'Huyện Bình Chánh', 'Quận Bình Thạnh', "Quận 1"],
+    datasets: [
+      {
+        label: 'District',
+        data: [52, 62, 48, 5,10],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
   const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+    { id: 'id', label: 'ID', minWidth: 170 },
+    { id: 'name', label: 'Username', minWidth: 100 },
     {
-      id: 'population',
-      label: 'Population',
+      id: 'email',
+      label: 'Email',
       minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
     },
     {
-      id: 'size',
-      label: 'Size\u00a0(km\u00b2)',
+      id: 'shop',
+      label: 'Shop Name',
       minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
     },
     {
-      id: 'density',
-      label: 'Density',
+      id: 'isActive',
+      label: 'Is Active',
       minWidth: 170,
-      align: 'right',
-      format: (value) => value.toFixed(2),
     },
   ];
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
   
-  const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-  ];
-const AdminDashboard = () => {
+  const AdminDashboard = () => {
+    const rows = [];
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+    const {loading,error,data:datas} = useQuery(getAllUser)
+    const {loading:loadingAdminAuc, error:errorAdminAuc,data:dataAdminAuc} = useQuery(adminDashBoardAuction)
+    const {loading:loadingAdminSale,error:errorAdminSale,data:dataAdminSale} = useQuery(adminDashboardSales)
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -102,41 +105,46 @@ const AdminDashboard = () => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+    if(!loading){
+        datas.getAllUser.map((itemUser,indexUser)=>{
+            const obj = {
+                id:itemUser.User_ID,
+                name:itemUser.User_Name,
+                email:itemUser.Email,
+                shop:itemUser.Shop_Name === null ? "No name shop" : itemUser.Shop_Name,
+                isActive:itemUser.isActive ? "Active" : "No Active"
+            }
+            rows.push(obj)
+        })
+    }
   return (
     <div>AdminDashboard
-        <div className='grid md:grid-cols-2 lg:grid-cols-4 my-5 gap-2'>
+        <div className='grid md:grid-cols-2 lg:grid-cols-3 my-5 gap-2'>
             <div className='flex justify-between items-center border-2 border-background-signup px-4 py-3 rounded-lg'>
                 <div className='flex items-center gap-1'>
                     <BiUser size={30}/>
                     <h1 className='text-base'>User</h1>
                 </div>
-                <h1>59</h1>
-            </div>
-            <div className='flex justify-between items-center border-2 border-background-signup px-4 py-3 rounded-lg'>
-                <div className='flex items-center gap-1'>
-                    <FaUsers size={30}/>
-                    <h1 className='text-base'>Users Sell</h1>
-                </div>
-                <h1>59</h1>
+                <h1>{!loading && datas.getAllUser.length}</h1>
             </div>
             <div className='flex justify-between items-center border-2 border-background-signup px-4 py-3 rounded-lg'>
                 <div className='flex items-center gap-1'>
                     <RiAuctionFill size={30}/>
                     <h1 className='text-base'>Auction Field</h1>
                 </div>
-                <h1>59</h1>
+                <h1>{!loadingAdminAuc && dataAdminAuc.adminDashBoardAuction.length}</h1>
             </div>
             <div className='flex justify-between items-center border-2 border-background-signup px-4 py-3 rounded-lg'>
                 <div className='flex items-center gap-1'>
                     <AiOutlineBarChart size={30}/>
-                    <h1 className='text-base'>Turnover</h1>
+                    <h1 className='text-base'>Sales</h1>
                 </div>
-                <h1>59</h1>
+                <h1>{!loadingAdminSale && dataAdminSale.adminDashboardSales.length}</h1>
             </div>
         </div>
         <div className='grid grid-cols-2 gap-2 mb-4'>
             <div className=' border-2 border-background-signup rounded-md'>
-                <Pie data={data} width={"400px"} height={"400px"}  options={{ maintainAspectRatio: false }}/>
+                <Pie data={datass} width={"400px"} height={"400px"}  options={{ maintainAspectRatio: false }}/>
             </div>
             <div className='border-2 border-background-signup rounded-md'>
                 <Pie data={data} width={"400px"} height={"400px"} options={{ maintainAspectRatio: false }}/>
@@ -164,14 +172,12 @@ const AdminDashboard = () => {
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => {
                             return (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                            <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                 {columns.map((column) => {
                                 const value = row[column.id];
                                 return (
                                     <TableCell key={column.id} align={column.align}>
-                                    {column.format && typeof value === 'number'
-                                        ? column.format(value)
-                                        : value}
+                                    {value}
                                     </TableCell>
                                 );
                                 })}
