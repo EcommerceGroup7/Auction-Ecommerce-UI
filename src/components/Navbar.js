@@ -114,7 +114,7 @@ const Navbar = () => {
                                 <Link to='/product' className='block w-full'>Product Manage</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
-                                <Link className='block w-full'>Order History</Link>
+                                <Link to='/historyOrder' className='block w-full'>Order History</Link>
                               </li>
                               <li className='hover:bg-link p-1 rounded-lg'>
                                 <Link to='/currency' className='block w-full'>Wallet</Link>
