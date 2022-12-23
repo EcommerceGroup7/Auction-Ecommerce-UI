@@ -174,7 +174,7 @@ const Checkout = () => {
         let data = JSON.stringify({
             "from_district_id": 3695,
             "service_id": 53320,
-            "to_district_id": districtIdsChange === 0 ? !loadingOrderTotal && dataOrderTotal.userOrderTotal.Address_ID.District_ID : districtIdsChange,
+            "to_district_id": districtIdsChange === 0 ? (!loadingOrderTotal && dataOrderTotal.userOrderTotal.Address_ID.District_ID) : districtIdsChange,
             "weight": !loadingOrderTotal && dataOrderTotal.userOrderTotal.weight*1000,
             "insurance_value": !loadingOrderTotal &&  Math.floor(dataOrderTotal.userOrderTotal.total * 23730)
           });

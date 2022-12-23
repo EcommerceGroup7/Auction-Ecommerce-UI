@@ -48,7 +48,7 @@ const ListItem = () => {
                     Product_Name:searchValue,
                 })
             }
-        },(!loadingMinTime && dataMinTime.getMinTimeToDiscount*60*1000 + 1000))
+        },(!loadingMinTime && dataMinTime.getMinTimeToDiscount*60*1000 + 10000))
         return ()=>clearInterval(minInterval)
     },[dataItem,dataAll,dataMinTime,loadingMinTime,searchValue,param.cate,refetchProductCatalog,refetchSearch,refetch])
   return (
@@ -80,7 +80,7 @@ const ListItem = () => {
                 <React.Fragment>
                     <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 mt-4'>
                         {!loadingItem && dataItem.getAuctioningProductByCatalog.map((item,index)=>(
-                            <Link className='bg-link p-3 rounded-lg' key={item.Product_Auction_ID} to={userId===item.User_ID.User_ID ? `/product/${item.Product_Auction_ID}` :`/item/${item.Product_Auction_ID}`}>
+                            <Link className='bg-link p-3 rounded-lg' key={item.Product_Auction_ID} to={userId===item.User_ID.User_ID ? `/product/${item.Product_ID.Product_ID}` :`/item/${item.Product_Auction_ID}`}>
                                 <div className='grid grid-cols-2 grid-rows-2 gap-1'>
                                     {item.Product_ID.Product_Image.slice(0,2).map((itemImg,indexItemImg)=>(
                                         <div className='row-span-2' key={itemImg.Product_Image_ID}>
@@ -100,7 +100,7 @@ const ListItem = () => {
             <React.Fragment>
                 <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 mt-4'>
                     {!loadingSearch && dataSearch.searchAuctioningProduct.map((itemSearch,index)=>(
-                        <Link className='bg-link p-3 rounded-lg' key={itemSearch.Product_Auction_ID} to={userId===itemSearch.User_ID.User_ID ? `/product/${itemSearch.Product_Auction_ID}` :`/item/${itemSearch.Product_Auction_ID}`}>
+                        <Link className='bg-link p-3 rounded-lg' key={itemSearch.Product_Auction_ID} to={userId===itemSearch.User_ID.User_ID ? `/product/${itemSearch.Product_ID.Product_ID}` :`/item/${itemSearch.Product_Auction_ID}`}>
                             <div className='grid grid-cols-2 grid-rows-2 gap-1'>
                                 {itemSearch.Product_ID.Product_Image.slice(0,2).map((itemImg,indexItemImg)=>(
                                     <div className='row-span-2' key={itemImg.Product_Image_ID}>

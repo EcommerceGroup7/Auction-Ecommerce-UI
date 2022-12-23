@@ -15,7 +15,7 @@ const ShoppingCart = () => {
             User_ID:userid
         }
     })
-    const {loading:loadingUserTotal, error:errorUserTotal, data:dataUserTotal} = useQuery(userOrderTotal,{
+    const {loading:loadingUserTotal, error:errorUserTotal, data:dataUserTotal,refetch:refetchOrder} = useQuery(userOrderTotal,{
         variables:{
             User_ID:userid
         }
@@ -33,6 +33,9 @@ const ShoppingCart = () => {
             setUserid(JSON.parse(localStorage.getItem('token')).userId.id)
         }
         refetch({
+            User_ID:userid
+        })
+        refetchOrder({
             User_ID:userid
         })
         if(!loadingUser){

@@ -148,7 +148,7 @@ const ItemCard = () => {
             refetchSimilar({
                 Product_Auction_ID:param.cateItem
             })
-        },(!loadingMinTime && dataMinTime?.getMinTimeToDiscount * 60 *1000 + 1000))
+        },(!loadingMinTime && dataMinTime?.getMinTimeToDiscount * 60 *1000 + 10000))
         return ()=>clearInterval(intervalMinTime)
     },[dataCurBid,dataMutation.loading,dataMutation.called,dataMutation.error,loadingCurItem,refecthGetId,refetchSimilar,loadingMinTime,dataMinTime,param.cateItem])
   return (
@@ -210,7 +210,7 @@ const ItemCard = () => {
             <h1 className='font-semibold text-xl'>Similar Item Bid</h1>
             <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-4'>
                 {!loadingSimilar && dataSimilar.getSimilartProductAuction.map((itemSimi,indexSimi)=>(
-                    <Link className='bg-link p-3 rounded-lg' key={itemSimi.Product_Auction_ID} to={userId === itemSimi.User_ID.User_ID ?`/product/${itemSimi.Product_Auction_ID}` :`/item/${itemSimi.Product_Auction_ID}`}>
+                    <Link className='bg-link p-3 rounded-lg' key={itemSimi.Product_Auction_ID} to={userId === itemSimi.User_ID.User_ID ?`/product/${itemSimi.Product_ID.Product_ID}` :`/item/${itemSimi.Product_Auction_ID}`}>
                         <div className='grid grid-cols-2 grid-rows-2 gap-1'>
                             {itemSimi.Product_ID.Product_Image.slice(0,2).map((itemSimiImg,indexSimiImg)=>(
                                 <div className='row-span-2' key={itemSimiImg.Product_Image_ID}>
